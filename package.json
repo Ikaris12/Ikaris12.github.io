@@ -1,21 +1,24 @@
 {
-  "name": "p5js-with-typescript",
+  "name": "ikaris12.github.io",
   "version": "1.0.0",
-  "description": "A template for a p5.js sketch using Typescript",
-  "main": "index.html",
+  "description": "",
+  "private": true,
   "scripts": {
-    "start": "parcel index.html --open",
-    "build": "parcel build index.html"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack serve --open"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/p5": "^1.7.0",
+    "ts-loader": "^9.4.4",
+    "typescript": "^5.2.2",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1"
   },
   "dependencies": {
-    "@types/p5": "0.9.0",
-    "p5": "0.9.0"
-  },
-  "devDependencies": {
-    "parcel-bundler": "^1.6.1"
-  },
-  "keywords": [
-    "p5js",
-    "typescript"
-  ]
+    "p5": "^1.7.0"
+  }
 }
