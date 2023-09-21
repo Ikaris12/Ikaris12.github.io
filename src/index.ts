@@ -19,16 +19,16 @@ export const sketch = (p: p5) => {
   ikariGreen = p.color(63, 173, 78)
   ikariGray = p.color(59, 59, 59)
   var pageId: number = 0
-  p.preload = () => {
-    img = p.loadImage("assets/Sprite-0001.png")
-  }
+  // p.preload = () => {
+  //   img = p.loadImage("../dist/assets/Sprite-0001.png")
+  // }
 
   p.setup = () => {
     cnv = p.createCanvas(p.windowWidth, p.windowHeight)
     cnv.style("display", "block")
-    p.loadImage("assets/Sprite-0001.png", (img) => {
-      p.image(img, 0, 0)
-    })
+    // p.loadImage("../dist/assets/Sprite-0001.png", (img) => {
+    //   p.image(img, 0, 0)
+    // })
     setResponsive()
     header = new Header(32, 64)
     header.addButton(new HeaderButton(0, 32, 200, 0, ikariGreen, "Home"))
@@ -41,7 +41,7 @@ export const sketch = (p: p5) => {
     controller.mousePress()
     p.fill(255, 255, 0)
     setPage()
-    p.image(img, 200, 200)
+    // p.image(img, 200, 200)
     p.text(Math.ceil(p.frameRate()), 300 * mpd, 100 * mpd)
   }
 
