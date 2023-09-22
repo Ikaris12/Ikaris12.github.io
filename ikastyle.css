@@ -14,10 +14,17 @@ body {
 
   /* This centers o  ur sketch vertically. */
   align-items: center;
-
   background-color: rgb(59, 59, 59);
 }
-/*
-#some-data {
+#pageContainer {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
 }
-*/
+#canvas {
+  display: flex;
+  flex-direction: column;
+}
+h1 {
+  text-align: center;
+}
