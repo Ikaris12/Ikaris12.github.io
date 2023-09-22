@@ -1,0 +1,23 @@
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  color: rgb(63, 173, 78);
+  margin: 0;
+  display: flex;
+
+  /* This centers our sketch horizontally. */
+  justify-content: space-around;
+
+  /* This centers o  ur sketch vertically. */
+  align-items: center;
+
+  background-color: rgb(59, 59, 59);
+}
+/*
+#some-data {
+}
+*/
