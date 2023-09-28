@@ -2,20 +2,45 @@
 <html lang="en">
   <head>
     <link rel="stylesheet" type="text/css" href="ikastyle.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Audiowide" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="UTF-8" />
     <title>Ikari's page</title>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function() {
+            // https://dashboard.emailjs.com/admin/account
+            emailjs.init('YOUR_PUBLIC_KEY');
+        })();
+    </script>
+    <script type="text/javascript">
+        window.onload = function() {
+            document.getElementById('contact-form').addEventListener('submit', function(event) {
+                event.preventDefault();
+                // generate a five digit number for the contact_number variable
+                this.contact_number.value = Math.random() * 100000 | 0;
+                // these IDs from the previous steps
+                emailjs.sendForm('contact_service', 'contact_form', this)
+                    .then(function() {
+                        console.log('SUCCESS!');
+                    }, function(error) {
+                        console.log('FAILED...', error);
+                    });
+            });
+        }
+    </script>
   </head>
   <body id="page">
     <div id="header">
-      <div class="header-button coding"><h3 class="header-text">Coding</h3></div>
+      <div class="header-button coding"><h3 class="header-text">Skills</h3></div>
       <div class="header-button art"><h3 class="header-text">Art</h3></div>
       <div class="header-button contact"><h3 class="header-text">Contact</h3></div>
     </div>
     <div id="sidebar">
-      <div class="sidebar-button coding"><h3 class="sidebar-text" >Coding</h3></div>
+      <div class="sidebar-button coding"><h3 class="sidebar-text" >Skills</h3></div>
       <div class="sidebar-button art"><h3 class="sidebar-text">Art</h3></div>
-      <div class="sidebar-button"><h3 class="sidebar-text">Contact</h3></div>
+      <div class="sidebar-button contact"><h3 class="sidebar-text">Contact</h3></div>
     </div>
     <div id="some-data">
       <h1>Ikari</h1>
@@ -45,24 +70,82 @@
           <div id="other" class="skillset">
             <p id="left-side">Other:</p>
             <div id="right-side" style="margin-top: 0.5em;">
-              <p>Processing</p>
               <p>Wordpress</p>
               <p>phpMyAdmin</p>
             </div>
           </div>
+          <div id="game-dev" class="skillset">
+            <p id="left-side">Game development:</p>
+            <div id="right-side" style="margin-top: 1.5em;">
+              <p>Unity</p>
+              <p>Game Maker</p>
+              <p>Processing</p>
+            </div>
+          </div>
+            <div id="graphics" class="skillset">
+              <p id="left-side">2D Graphics:</p>
+              <div id="right-side" style="margin-top: 0.5em;">
+                <p>Adobe Illustrator</p>
+                <p>Aseprite</p>
+              </div>
+            </div>
+            <div id="graphics-3d" class="skillset">
+              <p id="left-side">3D Graphics:</p>
+              <div id="right-side" style="margin-top: 0.5em;">
+                <p>Blender</p>
+                <p>Houdini</p>
+              </div>
+            </div>
+            <div id="video" class="skillset">
+              <p id="left-side">Video Production:</p>
+              <div id="right-side" style="margin-top: 1.5em;">
+                <p>Sony Vegas</p>
+                <p>Adobe Premiere</p>
+                <p>DaVinci Resolve</p>
+                <p>Adobe After Effects</p>
+              </div>
+            </div>
+            <div id="audio" class="skillset">
+              <p id="left-side">Audio Editing:</p>
+              <div id="right-side" style="margin-top: 0.5em">
+                <p>Reaper</p>
+              </div>
+            </div>
+            <div id="webdesign" class="skillset">
+              <p id="left-side">UI/UX Design:</p>
+              <div id="right-side" style="margin-top: 1.5em;">
+                <p>Figma</p>
+              </div>
+            </div>
           </div>
           <div class = empty-div>
             <p style="display: none;">a</p>
           </div>
 
           <div id="art-container">
-            <h2>Art</h2>
+            <h2 id="art-title">Art</h2>
           <img class="art-image"src="assets/altered.png" alt="">
           <img class="art-image" src="assets/burningsmile.png">
+          <img class="art-image"src="assets/Sprite-0001.png" alt="">
+          <img class="art-image" src="assets/BttS1.png" alt="">
+          <img class="art-image" src="assets/BttS2.png" alt="">
+          <img class="art-image" src="assets/BttS3.png" alt="">
         </div>
-          
+        <div id="contacts">
+          <h2 style="font-size: 2em; text-align: center;">Contact Me</h2>
+          <form id="contact-form">
+            <input type="hidden" name="contact_number">
+            <label>Name</label>
+            <input type="text" name="user_name" id = "username">
+            <label>Email</label>
+            <input type="email" name="user_email">
+            <label>Message</label>
+            <textarea name="message" id="message"></textarea>
+            <input type="submit" value="Send" id="submitbutton">
+        </form>
+         </div>
       </div>
-   
+
     </div>       
       </div>
     </div>
