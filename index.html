@@ -3,54 +3,45 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Il mio gioco con Phaser</title>
-  <script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.js"></script>
+  <title>I miei mini giochi</title>
   <style>
     body {
       margin: 0;
       padding: 0;
-      background: #222;
-      color: white;
-      font-family: sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      overflow: hidden;
+      font-family: Arial, sans-serif;
+      background: #121212;
+      color: #fff;
+      text-align: center;
     }
-    canvas {
+    h1 {
+      margin-top: 40px;
+    }
+    .game-list {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 30px;
+    }
+    a {
       display: block;
-      margin: auto;
+      margin: 10px;
+      padding: 15px 25px;
+      background: #1e88e5;
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+      transition: background 0.2s;
+    }
+    a:hover {
+      background: #1565c0;
     }
   </style>
 </head>
 <body>
-  <script>
-    const config = {
-      type: Phaser.AUTO,
-      width: 400,
-      height: 600,
-      backgroundColor: '#1d1d1d',
-      physics: { default: 'arcade' },
-      scene: { preload, create, update }
-    };
-
-    let logo;
-
-    function preload() {
-      this.load.image('logo', 'https://labs.phaser.io/assets/sprites/phaser3-logo.png');
-    }
-
-    function create() {
-      logo = this.physics.add.image(200, 300, 'logo');
-      logo.setVelocity(100, 200);
-      logo.setBounce(1, 1);
-      logo.setCollideWorldBounds(true);
-    }
-
-    function update() {}
-
-    new Phaser.Game(config);
-  </script>
+  <h1>🎮 I miei mini giochi</h1>
+  <div class="game-list">
+    <a href="game1.html">Gioco 1</a>
+    <a href="game2.html">Gioco 2</a>
+  </div>
 </body>
 </html>
