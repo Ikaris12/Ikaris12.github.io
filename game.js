@@ -1,14 +1,17 @@
 const config = {
   type: Phaser.AUTO,
-  width: 800,
-  height: 400,
-  backgroundColor: '#976bdaff',
   physics: {
     default: 'arcade',
     arcade: {
       gravity: { y: 800 },
       debug: false
     }
+  },
+  scale: {
+    mode: Phaser.Scale.FIT,         // scala mantenendo proporzioni
+    autoCenter: Phaser.Scale.CENTER_BOTH, // centra il canvas
+    width: window.innerWidth,       // larghezza del device
+    height: window.innerHeight      // altezza del device
   },
   scene: { preload, create, update }
 };
@@ -42,7 +45,7 @@ function create() {
   this.physics.add.existing(ground, true); // true = static body
 
   // Giocatore
-  player = this.physics.add.sprite(0, 0, 'player');
+  player = this.physics.add.sprite(64, 0, 'player');
   player.setCollideWorldBounds(true);
   player.displayWidth = 80;
   player.displayHeight = 64;
