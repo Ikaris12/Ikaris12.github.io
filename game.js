@@ -78,7 +78,7 @@ function update() {
 
   // Sposta la "camera" per seguire il giocatore
   this.cameras.main.startFollow(player);
-  this.cameras.main.setFollowOffset(-200,-128);
+  this.cameras.main.setFollowOffset(-200,-512);
 }
 
 function jump() {
