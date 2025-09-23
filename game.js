@@ -22,8 +22,9 @@ let scoreText;
 
 function preload() {
   // Creiamo semplici texture al volo
-  this.textures.generate('player', { data: ['0'], pixelWidth: 32, pixelHeight: 32, palette: { 0: '#00ff00' } });
+  
   this.textures.generate('coin', { data: ['0'], pixelWidth: 16, pixelHeight: 16, palette: { 0: '#ffd700' } });
+  this.load.image('player','assets/images/redblack.png');
 }
 
 function create() {
@@ -32,7 +33,7 @@ function create() {
   platforms.create(400, 380, null).setDisplaySize(800, 40).refreshBody();
 
   // Giocatore
-  player = this.physics.add.sprite(100, 300, 'player');
+  player = this.physics.add.sprite(80, 64, 'player');
   player.setCollideWorldBounds(true);
 
   // Collisione con piattaforme
