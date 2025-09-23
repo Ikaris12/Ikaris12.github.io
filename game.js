@@ -2,7 +2,7 @@ const config = {
   type: Phaser.AUTO,
   width: 800,
   height: 400,
-  backgroundColor: '#180239ff',
+  backgroundColor: '#976bdaff',
   physics: {
     default: 'arcade',
     arcade: {
@@ -33,7 +33,7 @@ function create() {
   ground = this.add.tileSprite(
     0, 
     this.scale.height-32, 
-    this.scale.width, 
+    800, 
     256,
     'ground'
   );
