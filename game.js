@@ -32,12 +32,14 @@ function create() {
   // Piattaforme
   ground = this.add.tileSprite(
     0, 
-    this.scale.height-128, 
+    this.scale.height-64, 
     this.scale.width*2, 
-    64,
+    256,
     'ground'
   );
-
+  ground.displayWidth = 256;
+  ground.displayHeight = 64;
+  
   this.physics.add.existing(ground, true); // true = static body
 
   // Giocatore
