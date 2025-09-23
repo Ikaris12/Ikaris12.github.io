@@ -81,9 +81,7 @@ function update() {
 }
 
 function jump() {
-  if (player.body.touching.down) {
     player.setVelocityY(-400);
-  }
 }
 
 function spawnCoin() {
