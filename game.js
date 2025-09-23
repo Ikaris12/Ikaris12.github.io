@@ -33,7 +33,7 @@ function create() {
   ground = this.add.tileSprite(
     0, 
     this.scale.height-64, 
-    this.scale.width*2, 
+    this.scale.width, 
     256,
     'ground'
   );
