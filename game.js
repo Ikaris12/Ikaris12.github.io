@@ -31,8 +31,8 @@ function preload() {
 function create() {
   // Piattaforme
   ground = this.add.tileSprite(
-    this.scale.width/2, 
-    this.scale.height-128, 
+    0, 
+    this.scale.height, 
     this.scale.width, 
     256,
     'ground'
