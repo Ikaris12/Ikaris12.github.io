@@ -75,10 +75,6 @@ function create() {
 function update() {
   //pavimento
   ground.tilePositionX += 2; // scorre il pavimento
-
-  // Sposta la "camera" per seguire il giocatore
-  this.cameras.main.startFollow(player);
-  this.cameras.main.setFollowOffset(-200,-512);
 }
 
 function jump() {
