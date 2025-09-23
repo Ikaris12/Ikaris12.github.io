@@ -32,9 +32,9 @@ function create() {
   // Piattaforme
   ground = this.add.tileSprite(
     0, 
-    900, 
-    this.scale.width-256, 
-    256,
+    this.scale.height-32, 
+    this.scale.width, 
+    64,
     'ground'
   );
   ground.displayWidth = 256;
