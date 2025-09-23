@@ -33,9 +33,10 @@ function create() {
   platforms.create(400, 380, null).setDisplaySize(800, 40).refreshBody();
 
   // Giocatore
-  player = this.physics.add.sprite(80, 64, 'player');
+  player = this.physics.add.sprite(100, 300, 'player');
   player.setCollideWorldBounds(true);
-
+  player.displayWidth = 80;
+  player.displayHeight = 64;
   // Collisione con piattaforme
   this.physics.add.collider(player, platforms);
 
