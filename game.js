@@ -2,7 +2,7 @@ const config = {
   type: Phaser.AUTO,
   width: 800,
   height: 400,
-  backgroundColor: '#1d1d1d',
+  backgroundColor: '#180239ff',
   physics: {
     default: 'arcade',
     arcade: {
@@ -40,6 +40,7 @@ function create() {
   player.setCollideWorldBounds(true);
   player.displayWidth = 80;
   player.displayHeight = 64;
+
   // Collisione con piattaforme
   this.physics.add.collider(player, ground);
 
@@ -70,6 +71,7 @@ function update() {
 
   // Sposta la "camera" per seguire il giocatore
   this.cameras.main.startFollow(player);
+  this.cameras.main.setFollowOffset(-200,0);
 }
 
 function jump() {
