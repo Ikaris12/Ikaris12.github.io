@@ -66,7 +66,7 @@ function update() {
   player.setVelocityX(200);
 
   // Sposta la "camera" per seguire il giocatore
-  this.cameras.main.startFollow(player, true, 0.05, 0.05);
+  this.cameras.main.startFollow(player);
 }
 
 function jump() {
