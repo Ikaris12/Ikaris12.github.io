@@ -43,7 +43,7 @@ function create() {
   this.physics.add.existing(ground, true); // true = static body
 
   // Giocatore
-  player = this.physics.add.sprite(300, 0, 'player');
+  player = this.physics.add.sprite(0, 0, 'player');
   player.setCollideWorldBounds(true);
   player.displayWidth = 80;
   player.displayHeight = 64;
