@@ -30,7 +30,9 @@ function preload() {
 
 function create() {
   // Piattaforme
-  ground = this.add.tileSprite(400, 380, 1600, 64, 'ground');
+  ground = this.add.tileSprite(400, 380, 1600, 256, 'ground');
+  ground.displayWidth = 256;
+  ground.displayHeight = 64;
   this.physics.add.existing(ground, true); // true = static body
 
   // Giocatore
