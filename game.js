@@ -25,12 +25,13 @@ function preload() {
   
   this.textures.generate('coin', { data: ['0'], pixelWidth: 16, pixelHeight: 16, palette: { 0: '#ffd700' } });
   this.load.image('player','assets/images/redblack.png');
+  this.load.image('platforms','assets/images/moonfloor.png');
 }
 
 function create() {
   // Piattaforme
-  platforms = this.physics.add.staticGroup();
-  platforms.create(400, 380, null).setDisplaySize(800, 40).refreshBody();
+  let ground = this.add.tileSprite(400, 380, 800, 64, 'moonfloor');
+  this.physics.add.existing(ground, true); // true = static body
 
   // Giocatore
   player = this.physics.add.sprite(100, 300, 'player');
@@ -38,7 +39,7 @@ function create() {
   player.displayWidth = 80;
   player.displayHeight = 64;
   // Collisione con piattaforme
-  this.physics.add.collider(player, platforms);
+  this.physics.add.collider(player, ground);
 
   // Input
   this.input.on('pointerdown', jump, this);
@@ -64,6 +65,8 @@ function create() {
 function update() {
   // Il giocatore si muove sempre in avanti
   player.setVelocityX(200);
+  //pavimento
+  ground.tilePositionX += 2; // scorre il pavimento
 
   // Sposta la "camera" per seguire il giocatore
   this.cameras.main.startFollow(player);
