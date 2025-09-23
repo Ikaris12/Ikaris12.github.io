@@ -30,6 +30,7 @@ function preload() {
   this.textures.generate('coin', { data: ['0'], pixelWidth: 16, pixelHeight: 16, palette: { 0: '#ffd700' } });
   this.load.image('player','assets/images/redblack.png');
   this.load.image('ground','assets/images/moonfloor.png');
+  this.textures.get('ground').setWrap(Phaser.Textures.WRAP_CLAMP);
 }
 
 function create() {
