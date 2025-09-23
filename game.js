@@ -32,7 +32,7 @@ function create() {
   // Piattaforme
   ground = this.add.tileSprite(
     0, 
-    this.scale.height-64, 
+    900, 
     this.scale.width, 
     256,
     'ground'
@@ -78,7 +78,7 @@ function update() {
 
   // Sposta la "camera" per seguire il giocatore
   this.cameras.main.startFollow(player);
-  this.cameras.main.setFollowOffset(-200,0);
+  this.cameras.main.setFollowOffset(-200,-128);
 }
 
 function jump() {
