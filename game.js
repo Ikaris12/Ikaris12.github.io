@@ -34,7 +34,7 @@ function create() {
     0, 
     this.scale.height-32, 
     this.scale.width, 
-    64,
+    256,
     'ground'
   );
   ground.displayWidth = 256;
