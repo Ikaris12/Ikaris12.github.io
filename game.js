@@ -14,7 +14,7 @@ const config = {
 };
 
 let player;
-let platforms;
+let ground;
 let cursors;
 let coins;
 let score = 0;
@@ -30,7 +30,7 @@ function preload() {
 
 function create() {
   // Piattaforme
-  let ground = this.add.tileSprite(400, 380, 800, 64, 'moonfloor');
+  ground = this.add.tileSprite(400, 380, 800, 64, 'moonfloor');
   this.physics.add.existing(ground, true); // true = static body
 
   // Giocatore
