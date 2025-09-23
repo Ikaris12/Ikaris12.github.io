@@ -37,7 +37,6 @@ function create() {
     256,
     'ground'
   );
-  ground.displayWidth = 256;
   ground.displayHeight = 64;
   
   this.physics.add.existing(ground, true); // true = static body
