@@ -154,7 +154,7 @@ function gameOver(scene) {
 
   // testo "hai perso"
   let textColor = '#ffffff';
-  if(score>99)
+  if(score>49)
   {
     textColor = '#c8c02a';
   }
