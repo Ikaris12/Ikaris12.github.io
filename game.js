@@ -153,30 +153,22 @@ function gameOver(scene) {
   bg.setDepth(10);
 
   // testo "hai perso"
-  if(score <100){
+  let textColor = '#ffffff';
+  if(score>99)
+  {
+    textColor = '#c8c02a';
+  }
     const gameOverText = scene.add.text(
     scene.scale.width / 2,
     scene.scale.height / 2 - 50,
     `Hai perso!\nIl tuo punteggio è: ${score}`,
     {
       fontSize: '32px',
-      fill: '#ffffff',
+      fill: textColor,
       align: 'center'
     }
   ).setOrigin(0.5);
-  }
-  else{
-    const gameOverText = scene.add.text(
-    scene.scale.width / 2,
-    scene.scale.height / 2 - 50,
-    `Hai perso!\nIl tuo punteggio è:\n${score}\nCONGRATULAZIONI!`,
-    {
-      fontSize: '32px',
-      fill: '#c49f25',
-      align: 'center'
-    }
-  ).setOrigin(0.5);
-  }
+  
   gameOverText.setDepth(11);
 
   // pulsante restart
