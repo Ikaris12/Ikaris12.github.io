@@ -69,15 +69,15 @@ function create() {
   });
 
   // Punteggio
-  scoreText = this.add.text(16, 16, 'Monete: 0', { fontSize: '20px', fill: '#fff' });
+  scoreText = this.add.text(16, 16, 'Gemme: 0', { fontSize: '20px', fill: '#fff' });
 
   // Collisione giocatore-monete
-  this.physics.add.overlap(player, gem, collectGem, null, this);
+  this.physics.add.overlap(player, gems, collectGem, null, this);
 }
 
 function update() {
   //pavimento
-  ground.tilePositionX += 2; // scorre il pavimento
+  ground.tilePositionX += 2+Math.floor(score/10); // scorre il pavimento
 }
 
 function jump() {
@@ -91,7 +91,7 @@ function spawnGem() {
   const gem = gems.create(player.x +this.scale.width+(i*100), y, 'gems');
   gem.displayWidth = 30;
   gem.displayHeight = 25;
-  gem.setVelocityX(-200); // si muove verso sinistra
+  gem.setVelocityX(-200 + score); // si muove verso sinistra
   gem.setCollideWorldBounds(false);
   gem.setGravityY(-800); // niente gravità
   }
