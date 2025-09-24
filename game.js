@@ -62,7 +62,7 @@ function create() {
 
   // Spawn gemme
   this.time.addEvent({
-    delay: 3000 + (200+(score*2)),
+    delay: 3000 + (200+(score*4)),
     callback: spawnGem,
     callbackScope: this,
     loop: true
@@ -77,7 +77,7 @@ function create() {
 
 function update() {
   //pavimento
-  ground.tilePositionX += 2+Math.floor(score/10); // scorre il pavimento
+  ground.tilePositionX += 2+Math.floor(score/30); // scorre il pavimento
 }
 
 function jump() {
@@ -91,7 +91,7 @@ function spawnGem() {
   const gem = gems.create(player.x +this.scale.width+(i*100), y, 'gems');
   gem.displayWidth = 30;
   gem.displayHeight = 25;
-  gem.setVelocityX(-200 - (score*2)); // si muove verso sinistra
+  gem.setVelocityX(-200 - (score*4)); // si muove verso sinistra
   gem.setCollideWorldBounds(false);
   gem.setGravityY(-800); // niente gravità
   }
