@@ -158,10 +158,10 @@ function gameOver(scene) {
   {
     textColor = '#c8c02a';
   }
-    const gameOverText = scene.add.text(
+  const gameOverText = scene.add.text(
     scene.scale.width / 2,
     scene.scale.height / 2 - 50,
-    `Hai perso!\nIl tuo punteggio è: ${score}`,
+    `Hai perso!\nPunteggio:\n${score}`,
     {
       fontSize: '32px',
       fill: textColor,
