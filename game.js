@@ -88,7 +88,7 @@ function spawnGem() {
   // Spawna una moneta davanti al player
   const y = Phaser.Math.Between(200, 700);
   for(let i=0; i<3; i++){
-  const gem = gem.create(player.x + 600+(i*100), y, 'gems');
+  const gem = gems.create(player.x + 600+(i*100), y, 'gems');
   gem.displayWidth = 60;
   gem.displayHeight = 51;
   gem.setVelocityX(-200); // si muove verso sinistra
