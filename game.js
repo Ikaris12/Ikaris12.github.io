@@ -24,12 +24,14 @@ let cursors;
 let gems;
 let score = 0;
 let scoreText;
+let walls;
 
 function preload() {
   //Assets
   this.load.image('player','assets/images/redblack.png');
   this.load.image('ground','assets/images/moonfloor.png');
   this.load.image('gems','assets/images/emerald.png');
+  this.load.image('walls','assets/images/prociolois.png');
 }
 
 function create() {
@@ -60,10 +62,20 @@ function create() {
   // Monete
   gems = this.physics.add.group();
 
+  //ostacoli
+  walls = this.physics.add.group();
+
   // Spawn gemme
   this.time.addEvent({
     delay: 3000 + (200+(score*4)),
     callback: spawnGem,
+    callbackScope: this,
+    loop: true
+  });
+  //spawn ostacoli
+   this.time.addEvent({
+    delay: 6000 + (200+(score*4)),
+    callback: spawnWall,
     callbackScope: this,
     loop: true
   });
@@ -95,8 +107,21 @@ function spawnGem() {
   gem.setCollideWorldBounds(false);
   gem.setGravityY(-800); // niente gravità
   }
-
 }
+
+  function spawnWall() {
+    //Spawna i muri
+    if(score>19)
+    {
+    const wall = walls.create(this.scale.width+200,this.scale.height,'walls');
+    wall.displayWidth = 140;
+    wall.displayHeight = 176;
+    wall.setVelocityX(-200 - (score*4));
+    wall.setCollideWorldBounds(false);
+    wall.setGravityY(-800); // niente gravità
+    }
+
+  }
 
 function collectGem(player, gem) {
   gem.destroy();
