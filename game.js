@@ -86,11 +86,11 @@ function jump() {
 
 function spawnGem() {
   // Spawna una moneta davanti al player
-  const y = Phaser.Math.Between(200, 700);
+  const y = Phaser.Math.Between(350, 700);
   for(let i=0; i<3; i++){
-  const gem = gems.create(player.x + 600+(i*100), y, 'gems');
-  gem.displayWidth = 60;
-  gem.displayHeight = 51;
+  const gem = gems.create(player.x +this.scale.width+(i*100), y, 'gems');
+  gem.displayWidth = 30;
+  gem.displayHeight = 25;
   gem.setVelocityX(-200); // si muove verso sinistra
   gem.setCollideWorldBounds(false);
   gem.setGravityY(-800); // niente gravità
