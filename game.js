@@ -14,7 +14,7 @@ const config = {
     width: window.innerWidth,       // larghezza del device
     height: window.innerHeight      // altezza del device
   },
-  backgroundColor: '#rgba(32, 0, 83, 1)',
+  backgroundColor: '#FFFF00',
   scene: { preload, create, update }
 };
 
