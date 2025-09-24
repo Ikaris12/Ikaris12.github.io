@@ -21,16 +21,15 @@ const config = {
 let player;
 let ground;
 let cursors;
-let gem;
+let gems;
 let score = 0;
 let scoreText;
 
 function preload() {
-  // Creiamo semplici texture al volo
-  
+  //Assets
   this.load.image('player','assets/images/redblack.png');
   this.load.image('ground','assets/images/moonfloor.png');
-  this.load.image('gem','assets/images/emerald.png');
+  this.load.image('gems','assets/images/emerald.png');
 }
 
 function create() {
@@ -59,7 +58,7 @@ function create() {
   this.input.on('pointerdown', jump, this);
 
   // Monete
-  gem = this.physics.add.group();
+  gems = this.physics.add.group();
 
   // Spawn monete periodico
   this.time.addEvent({
@@ -89,7 +88,7 @@ function spawnGem() {
   // Spawna una moneta davanti al player
   const y = Phaser.Math.Between(200, 700);
   for(let i=0; i<3; i++){
-  const gem = gem.create(player.x + 600+(i*100), y, 'gem');
+  const gem = gem.create(player.x + 600+(i*100), y, 'gems');
   gem.displayWidth = 60;
   gem.displayHeight = 51;
   gem.setVelocityX(-200); // si muove verso sinistra
