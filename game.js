@@ -21,7 +21,7 @@ const config = {
 let player;
 let ground;
 let cursors;
-let gems;
+let gem;
 let score = 0;
 let scoreText;
 
@@ -30,7 +30,7 @@ function preload() {
   
   this.load.image('player','assets/images/redblack.png');
   this.load.image('ground','assets/images/moonfloor.png');
-  this.load.image('gems','assets/images/emerald.png');
+  this.load.image('gem','assets/images/emerald.png');
 }
 
 function create() {
@@ -59,7 +59,7 @@ function create() {
   this.input.on('pointerdown', jump, this);
 
   // Monete
-  gems = this.physics.add.group();
+  gem = this.physics.add.group();
 
   // Spawn monete periodico
   this.time.addEvent({
@@ -73,7 +73,7 @@ function create() {
   scoreText = this.add.text(16, 16, 'Monete: 0', { fontSize: '20px', fill: '#fff' });
 
   // Collisione giocatore-monete
-  this.physics.add.overlap(player, gems, collectGem, null, this);
+  this.physics.add.overlap(player, gem, collectGem, null, this);
 }
 
 function update() {
@@ -89,7 +89,7 @@ function spawnGem() {
   // Spawna una moneta davanti al player
   const y = Phaser.Math.Between(200, 700);
   for(let i=0; i<3; i++){
-  const gem = gem.create(player.x + 600+(i*100), y, 'gems');
+  const gem = gem.create(player.x + 600+(i*100), y, 'gem');
   gem.displayWidth = 60;
   gem.displayHeight = 51;
   gem.setVelocityX(-200); // si muove verso sinistra
