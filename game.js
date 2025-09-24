@@ -153,7 +153,8 @@ function gameOver(scene) {
   bg.setDepth(10);
 
   // testo "hai perso"
-  const gameOverText = scene.add.text(
+  if(gems <100){
+    const gameOverText = scene.add.text(
     scene.scale.width / 2,
     scene.scale.height / 2 - 50,
     `Hai perso!\nIl tuo punteggio è: ${score}`,
@@ -163,12 +164,26 @@ function gameOver(scene) {
       align: 'center'
     }
   ).setOrigin(0.5);
+  }
+  else{
+        const gameOverText = scene.add.text(
+    scene.scale.width / 2,
+    scene.scale.height / 2 - 50,
+    `Hai perso!\nIl tuo punteggio è:\n${score}\nCONGRATULAZIONI!`,
+    {
+      fontSize: '32px',
+      fill: '#c49f25',
+      align: 'center'
+    }
+  ).setOrigin(0.5);
+  }
+  
   gameOverText.setDepth(11);
 
   // pulsante restart
   const restartText = scene.add.text(
     scene.scale.width / 2,
-    scene.scale.height / 2 + 50,
+    scene.scale.height / 2 + 100,
     'Ricomincia',
     {
       fontSize: '28px',
