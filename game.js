@@ -134,6 +134,10 @@ function collectGem(player, gem) {
   gem.destroy();
   score += 1;
   scoreText.setText('Gemme: ' + score);
+  if(score>49)
+  {
+    scoreText.setColor('#c8c02a');
+  }
 }
 
 function gameOver(scene) {
