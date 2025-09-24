@@ -86,6 +86,9 @@ function create() {
 
   // Collisione giocatore-monete
   this.physics.add.overlap(player, gems, collectGem, null, this);
+
+  // Collisione giocatore-muro
+  this.physics.add.overlap(player, walls, gameOver, null, this);
 }
 
 function update() {
@@ -114,7 +117,8 @@ function spawnGem() {
     //Spawna i muri
     if(score>19)
     {
-    const wall = walls.create(this.scale.width+200,this.scale.height-88,'walls');
+    const wallY = Phaser.Math.Between(88, this.scale.height-88);
+    const wall = walls.create(this.scale.width+200,wallY,'walls');
     wall.displayWidth = 140;
     wall.displayHeight = 176;
     wall.setVelocityX(-200 - (score*4));
@@ -129,5 +133,56 @@ function collectGem(player, gem) {
   score += 1;
   scoreText.setText('Gemme: ' + score);
 }
+
+function gameOver(scene) {
+  // ferma input e movimento
+  scene.input.enabled = false;
+  scene.physics.pause();
+  player.setTint(0xff0000); // effetto rosso al player (opzionale)
+
+  // sfondo nero
+  const bg = scene.add.rectangle(
+    scene.scale.width / 2,
+    scene.scale.height / 2,
+    scene.scale.width,
+    scene.scale.height,
+    0x000000
+  );
+  bg.setScrollFactor(0);
+  bg.setDepth(10);
+
+  // testo "hai perso"
+  const gameOverText = scene.add.text(
+    scene.scale.width / 2,
+    scene.scale.height / 2 - 50,
+    `Hai perso!\nIl tuo punteggio è: ${score}`,
+    {
+      fontSize: '32px',
+      fill: '#ffffff',
+      align: 'center'
+    }
+  ).setOrigin(0.5);
+  gameOverText.setDepth(11);
+
+  // pulsante restart
+  const restartText = scene.add.text(
+    scene.scale.width / 2,
+    scene.scale.height / 2 + 50,
+    'Ricomincia',
+    {
+      fontSize: '28px',
+      fill: '#00ff00',
+      backgroundColor: '#222'
+    }
+  ).setOrigin(0.5).setPadding(10);
+  restartText.setDepth(11);
+  restartText.setInteractive({ useHandCursor: true });
+
+  restartText.on('pointerdown', () => {
+    score = 0; // reset punteggio
+    scene.scene.restart(); // riavvia la scena
+  });
+}
+
 
 new Phaser.Game(config);
