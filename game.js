@@ -88,7 +88,9 @@ function create() {
   this.physics.add.overlap(player, gems, collectGem, null, this);
 
   // Collisione giocatore-muro
-  this.physics.add.overlap(player, walls, gameOver, null, this);
+  this.physics.add.overlap(player, walls, (player, wall) => {
+    gameOver(this);
+  }, null, this);
 }
 
 function update() {
@@ -136,6 +138,7 @@ function collectGem(player, gem) {
 
 function gameOver(scene) {
   // ferma input e movimento
+  scene.input.enabled = false;
   scene.physics.pause();
   player.setTint(0xff0000); // effetto rosso al player (opzionale)
 
