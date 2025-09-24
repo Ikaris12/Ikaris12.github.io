@@ -73,8 +73,9 @@ function create() {
     loop: true
   });
   //spawn ostacoli
+  const wallDelay = Phaser.Math.Between(3000, 6000)+(score*4);
    this.time.addEvent({
-    delay: 6000 + (200+(score*4)),
+    delay: wallDelay,
     callback: spawnWall,
     callbackScope: this,
     loop: true
@@ -113,7 +114,7 @@ function spawnGem() {
     //Spawna i muri
     if(score>19)
     {
-    const wall = walls.create(this.scale.width+200,this.scale.height,'walls');
+    const wall = walls.create(this.scale.width+200,this.scale.height-88,'walls');
     wall.displayWidth = 140;
     wall.displayHeight = 176;
     wall.setVelocityX(-200 - (score*4));
