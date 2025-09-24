@@ -14,7 +14,7 @@ const config = {
     width: window.innerWidth,       // larghezza del device
     height: window.innerHeight      // altezza del device
   },
-  backgroundColor: '#200446ff',
+  backgroundColor: '#200446',
   scene: { preload, create, update }
 };
 
@@ -60,16 +60,16 @@ function create() {
   // Monete
   gems = this.physics.add.group();
 
-  // Spawn monete periodico
+  // Spawn gemme
   this.time.addEvent({
-    delay: 1500,
+    delay: 3000 + score,
     callback: spawnGem,
     callbackScope: this,
     loop: true
   });
 
   // Punteggio
-  scoreText = this.add.text(16, 16, 'Gemme: 0', { fontSize: '20px', fill: '#fff' });
+  scoreText = this.add.text(this.scale.width/2, 16, 'Gemme: 0', { fontSize: '20px', fill: '#fff' });
 
   // Collisione giocatore-monete
   this.physics.add.overlap(player, gems, collectGem, null, this);
@@ -86,7 +86,7 @@ function jump() {
 
 function spawnGem() {
   // Spawna una moneta davanti al player
-  const y = Phaser.Math.Between(350, 700);
+  const y = Phaser.Math.Between(64, this.scale.height-64);
   for(let i=0; i<3; i++){
   const gem = gems.create(player.x +this.scale.width+(i*100), y, 'gems');
   gem.displayWidth = 30;
