@@ -138,7 +138,6 @@ function collectGem(player, gem) {
 
 function gameOver(scene) {
   // ferma input e movimento
-  scene.input.enabled = false;
   scene.physics.pause();
   player.setTint(0xff0000); // effetto rosso al player (opzionale)
 
