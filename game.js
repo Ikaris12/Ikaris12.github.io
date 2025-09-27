@@ -193,17 +193,6 @@ function gameOver(scene) {
     score = 0; // reset punteggio
     scene.scene.restart(); // riavvia la scena
   });
-
-const instaLink = this.add.text(
-  this.scale.width / 2,
-  this.scale.height / 2 + 80,
-  "Instagram: @ikaris12",
-  { fontSize: '24px', fill: '#00ff00' }
-).setOrigin(0.5).setInteractive({ useHandCursor: true });
-
-instaLink.on('pointerdown', () => {
-  location.href = "https://www.instagram.com/ikaris12?igsh=b2JmZWo3dnU4ZnVv";
-});
 }
 
 
