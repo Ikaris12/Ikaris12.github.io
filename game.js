@@ -202,7 +202,7 @@ const instaLink = this.add.text(
 ).setOrigin(0.5).setInteractive({ useHandCursor: true });
 
 instaLink.on('pointerdown', () => {
-  window.open("https://www.instagram.com/ikaris12?igsh=b2JmZWo3dnU4ZnVv", "_blank");
+  location.href = "https://www.instagram.com/ikaris12?igsh=b2JmZWo3dnU4ZnVv";
 });
 }
 
