@@ -82,7 +82,7 @@ function create() {
   });
 
   // Punteggio
-  scoreText = this.add.text(this.scale.width/2, 16, 'Gemme: 0', { fontSize: '20px', fill: '#fff' });
+  scoreText = this.add.text(this.scale.width/2, 16, 'Gemme: 0 /50', { fontSize: '20px', fill: '#fff' });
 
   // Collisione giocatore-monete
   this.physics.add.overlap(player, gems, collectGem, null, this);
@@ -133,7 +133,7 @@ function spawnGem() {
 function collectGem(player, gem) {
   gem.destroy();
   score += 1;
-  scoreText.setText('Gemme: ' + score);
+  scoreText.setText('Gemme: ' + score +' /50');
   if(score>49)
   {
     scoreText.setColor('#c8c02a');
