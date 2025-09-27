@@ -196,7 +196,7 @@ function gameOver(scene) {
  
 const instaLink = scene.add.text(
   scene.scale.width / 2,
-  scene.scale.height / 2 + 160, // posizionato sotto il pulsante "ricomincia"
+  scene.scale.height / 2 + 200, // posizionato sotto il pulsante "ricomincia"
   "Seguici su Instagram:\n@ikaris12\n \n@moonscythe.shi\n@from.omega",
   {
     fontSize: '28px',
