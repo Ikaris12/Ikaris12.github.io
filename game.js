@@ -193,6 +193,20 @@ function gameOver(scene) {
     score = 0; // reset punteggio
     scene.scene.restart(); // riavvia la scena
   });
+ 
+const instaLink = scene.add.text(
+  scene.scale.width / 2,
+  scene.scale.height / 2 + 80, // posizionato sotto il pulsante "ricomincia"
+  "@ikaris12",
+  {
+    fontSize: '28px',
+    fill: '#00ff00',
+    align: 'center'
+  }
+).setOrigin(0.5);
+
+instaLink.setDepth(11);
+
 }
 
 
