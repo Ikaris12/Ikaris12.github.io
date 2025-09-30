@@ -193,6 +193,25 @@ function gameOver(scene) {
     score = 0; // reset punteggio
     scene.scene.restart(); // riavvia la scena
   });
+
+  const instaLink = scene.add.text(
+  scene.scale.width / 2,
+  scene.scale.height / 2 + 120, // sotto il pulsante ricomincia
+  "Seguimi su Instagram",
+  {
+    fontSize: '24px',
+    fill: '#00ff00',
+    align: 'center'
+  }
+).setOrigin(0.5).setInteractive({ useHandCursor: true });
+
+instaLink.on('pointerdown', () => {
+  location.href = "https://www.instagram.com/ikaris12?igsh=b2JmZWo3dnU4ZnVv";
+});
+
+instaLink.setDepth(11);
+
+
 }
 
 
