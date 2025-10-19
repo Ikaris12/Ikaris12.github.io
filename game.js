@@ -7,7 +7,7 @@ class TitleScene extends Phaser.Scene {
     this.cameras.main.setBackgroundColor("#000000");
 
     this.add
-      .text(this.scale.width / 2, this.scale.height / 2 - 100, "MOON RUNNER", {
+      .text(this.scale.width / 2, this.scale.height / 2 - 100, "MOO 'N' RUN", {
         fontSize: "48px",
         fill: "#ffffff",
       })
