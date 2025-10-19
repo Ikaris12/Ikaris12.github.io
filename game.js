@@ -1,5 +1,5 @@
-import TitleScene from "game/scenes/TitleScene.js";
-import GameScene from "game/scenes/GameScene.js";
+import TitleScene from "./game/scenes/TitleScene.js";
+import GameScene from "./game/scenes/GameScene.js";
 
 const config = {
   type: Phaser.AUTO,
