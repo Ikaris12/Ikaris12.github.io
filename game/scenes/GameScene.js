@@ -1,6 +1,12 @@
 export class GameScene extends Phaser.Scene {
   constructor() {
     super("GameScene");
+
+    this.score = 0;
+    this.ground = null;
+    this.gems = null;
+    this.walls = null;
+    this.scoreText = null;
   }
 
   preload() {
