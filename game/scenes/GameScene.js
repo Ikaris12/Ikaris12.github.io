@@ -13,7 +13,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   create() {
-    this.this.score = 0;
+    this.score = 0;
     this.ground = this.add.tileSprite(
       this.scale.width / 2,
       this.scale.height - 32,
