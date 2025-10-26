@@ -1,5 +1,6 @@
 import { TitleScene } from "./game/scenes/TitleScene.js";
 import { GameScene } from "./game/scenes/GameScene.js";
+import { StageCompleteScene } from "./game/scenes/StageCompleteScene.js";
 
 const config = {
   type: Phaser.AUTO,
@@ -15,7 +16,7 @@ const config = {
     height: window.innerHeight,
   },
   backgroundColor: "#200446",
-  scene: [TitleScene, GameScene],
+  scene: [TitleScene, GameScene, StageCompleteScene],
 };
 
 new Phaser.Game(config);

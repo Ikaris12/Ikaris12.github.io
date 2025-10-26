@@ -113,7 +113,10 @@ export class GameScene extends Phaser.Scene {
     gem.destroy();
     this.score += 1;
     this.scoreText.setText("Gemme: " + this.score + " /50");
-    if (this.score > 49) this.scoreText.setColor("#c8c02a");
+    if (this.score > 2) {
+      this.scoreText.setColor("#c8c02a");
+      this.scene.start("StageCompleteScene");
+    }
   }
 
   gameOver() {
