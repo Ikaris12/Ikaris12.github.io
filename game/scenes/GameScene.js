@@ -25,7 +25,7 @@ export class GameScene extends Phaser.Scene {
       "ground"
     );
     this.ground.displayHeight = 64;
-    this.physics.add.existing(ground, true);
+    this.physics.add.existing(this.ground, true);
 
     this.player = this.physics.add.sprite(64, 0, "player");
     this.player.setCollideWorldBounds(true);
