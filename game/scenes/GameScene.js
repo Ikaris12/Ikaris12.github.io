@@ -35,17 +35,17 @@ export class GameScene extends Phaser.Scene {
     this.physics.add.collider(this.player, this.ground);
     this.input.on("pointerdown", this.jump, this);
 
-    gems = this.physics.add.group();
-    walls = this.physics.add.group();
+    this.gems = this.physics.add.group();
+    this.walls = this.physics.add.group();
 
     this.time.addEvent({
-      delay: 3000 + (200 + score * 4),
+      delay: 3000 + (200 + this.score * 4),
       callback: this.spawnGem,
       callbackScope: this,
       loop: true,
     });
 
-    const wallDelay = Phaser.Math.Between(3000, 6000) + score * 4;
+    const wallDelay = Phaser.Math.Between(3000, 6000) + this.score * 4;
     this.time.addEvent({
       delay: wallDelay,
       callback: this.spawnWall,
@@ -53,7 +53,7 @@ export class GameScene extends Phaser.Scene {
       loop: true,
     });
 
-    scoreText = this.add.text(this.scale.width / 2, 16, "Gemme: 0 /50", {
+    this.scoreText = this.add.text(this.scale.width / 2, 16, "Gemme: 0 /50", {
       fontSize: "20px",
       fill: "#fff",
     });
@@ -100,7 +100,7 @@ export class GameScene extends Phaser.Scene {
     gem.destroy();
     this.score += 1;
     this.scoreText.setText("Gemme: " + this.sscore + " /50");
-    if (this.score > 49) scoreText.setColor("#c8c02a");
+    if (this.score > 49) this.scoreText.setColor("#c8c02a");
   }
 
   gameOver() {
