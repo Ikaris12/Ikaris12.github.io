@@ -4,10 +4,10 @@ export class GameScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image("player", "../assets/images/redblack.png");
-    this.load.image("ground", "../assets/images/moonfloor.png");
-    this.load.image("gems", "../assets/images/emerald.png");
-    this.load.image("walls", "../assets/images/prociolois.png");
+    this.load.image("player", "game/assets/images/redblack.png");
+    this.load.image("ground", "game/assets/images/moonfloor.png");
+    this.load.image("gems", "game/assets/images/emerald.png");
+    this.load.image("walls", "game/assets/images/prociolois.png");
   }
 
   create() {
