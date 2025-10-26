@@ -24,15 +24,15 @@ export class GameScene extends Phaser.Scene {
       256,
       "ground"
     );
-    ground.displayHeight = 64;
+    this.ground.displayHeight = 64;
     this.physics.add.existing(ground, true);
 
-    player = this.physics.add.sprite(64, 0, "player");
-    player.setCollideWorldBounds(true);
-    player.displayWidth = 80;
-    player.displayHeight = 64;
+    this.player = this.physics.add.sprite(64, 0, "player");
+    this.player.setCollideWorldBounds(true);
+    this.player.displayWidth = 80;
+    this.player.displayHeight = 64;
 
-    this.physics.add.collider(player, ground);
+    this.physics.add.collider(this.player, this.ground);
     this.input.on("pointerdown", this.jump, this);
 
     gems = this.physics.add.group();
@@ -63,17 +63,21 @@ export class GameScene extends Phaser.Scene {
   }
 
   update() {
-    ground.tilePositionX += 2 + Math.floor(score / 30);
+    this.ground.tilePositionX += 2 + Math.floor(score / 30);
   }
 
   jump() {
-    player.setVelocityY(-400);
+    this.player.setVelocityY(-400);
   }
 
   spawnGem() {
     const y = Phaser.Math.Between(64, this.scale.height - 64);
     for (let i = 0; i < 3; i++) {
-      const gem = gems.create(player.x + this.scale.width + i * 100, y, "gems");
+      const gem = this.gems.create(
+        player.x + this.scale.width + i * 100,
+        y,
+        "gems"
+      );
       gem.displayWidth = 30;
       gem.displayHeight = 25;
       gem.setVelocityX(-200 - score * 4);
@@ -94,14 +98,14 @@ export class GameScene extends Phaser.Scene {
 
   collectGem(player, gem) {
     gem.destroy();
-    score += 1;
-    scoreText.setText("Gemme: " + score + " /50");
-    if (score > 49) scoreText.setColor("#c8c02a");
+    this.score += 1;
+    this.scoreText.setText("Gemme: " + this.sscore + " /50");
+    if (this.score > 49) scoreText.setColor("#c8c02a");
   }
 
   gameOver() {
     this.physics.pause();
-    player.setTint(0xff0000);
+    this.player.setTint(0xff0000);
 
     const bg = this.add
       .rectangle(
