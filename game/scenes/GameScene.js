@@ -1,12 +1,6 @@
 export class GameScene extends Phaser.Scene {
   constructor() {
     super("GameScene");
-
-    this.score = 0;
-    this.ground = null;
-    this.gems = null;
-    this.walls = null;
-    this.scoreText = null;
   }
 
   preload() {
@@ -17,6 +11,8 @@ export class GameScene extends Phaser.Scene {
   }
 
   create() {
+    this.score = 0;
+
     this.ground = this.add.tileSprite(
       this.scale.width / 2,
       this.scale.height - 32,
@@ -58,12 +54,24 @@ export class GameScene extends Phaser.Scene {
       fill: "#fff",
     });
 
-    this.physics.add.overlap(player, gems, this.collectGem, null, this);
-    this.physics.add.overlap(player, walls, () => this.gameOver(), null, this);
+    this.physics.add.overlap(
+      this.player,
+      this.gems,
+      this.collectGem,
+      null,
+      this
+    );
+    this.physics.add.overlap(
+      this.player,
+      this.walls,
+      () => this.gameOver(),
+      null,
+      this
+    );
   }
 
   update() {
-    this.ground.tilePositionX += 2 + Math.floor(score / 30);
+    this.ground.tilePositionX += 2 + Math.floor(this.score / 30);
   }
 
   jump() {
@@ -74,24 +82,24 @@ export class GameScene extends Phaser.Scene {
     const y = Phaser.Math.Between(64, this.scale.height - 64);
     for (let i = 0; i < 3; i++) {
       const gem = this.gems.create(
-        player.x + this.scale.width + i * 100,
+        this.player.x + this.scale.width + i * 100,
         y,
         "gems"
       );
       gem.displayWidth = 30;
       gem.displayHeight = 25;
-      gem.setVelocityX(-200 - score * 4);
+      gem.setVelocityX(-200 - this.score * 4);
       gem.setGravityY(-800);
     }
   }
 
   spawnWall() {
-    if (score > 19) {
+    if (this.score > 19) {
       const wallY = Phaser.Math.Between(88, this.scale.height - 88);
-      const wall = walls.create(this.scale.width + 200, wallY, "walls");
+      const wall = this.walls.create(this.scale.width + 200, wallY, "walls");
       wall.displayWidth = 140;
       wall.displayHeight = 176;
-      wall.setVelocityX(-200 - score * 4);
+      wall.setVelocityX(-200 - this.score * 4);
       wall.setGravityY(-800);
     }
   }
@@ -99,7 +107,7 @@ export class GameScene extends Phaser.Scene {
   collectGem(player, gem) {
     gem.destroy();
     this.score += 1;
-    this.scoreText.setText("Gemme: " + this.sscore + " /50");
+    this.scoreText.setText("Gemme: " + this.score + " /50");
     if (this.score > 49) this.scoreText.setColor("#c8c02a");
   }
 
@@ -117,13 +125,13 @@ export class GameScene extends Phaser.Scene {
       )
       .setDepth(10);
 
-    const textColor = score > 49 ? "#c8c02a" : "#ffffff";
+    const textColor = this.score > 49 ? "#c8c02a" : "#ffffff";
 
     this.add
       .text(
         this.scale.width / 2,
         this.scale.height / 2 - 50,
-        `Hai perso!\nPunteggio:\n${score}`,
+        `Hai perso!\nPunteggio:\n${this.score}`,
         { fontSize: "32px", fill: textColor, align: "center" }
       )
       .setOrigin(0.5)
