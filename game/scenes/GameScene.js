@@ -1,4 +1,4 @@
-const JUMP_FORCE = 400;
+const JUMP_FORCE = -400;
 
 export class GameScene extends Phaser.Scene {
   constructor() {
@@ -13,8 +13,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   create() {
-    this.
-    this.score = 0;
+    this.this.score = 0;
     this.ground = this.add.tileSprite(
       this.scale.width / 2,
       this.scale.height - 32,
@@ -31,8 +30,8 @@ export class GameScene extends Phaser.Scene {
     this.player.displayHeight = 64;
 
     this.physics.add.collider(this.player, this.ground);
-    this.input.on("pointerdown", this., this);
-jump
+    this.input.on("pointerdown", this.jump, this);
+
     this.gems = this.physics.add.group();
     this.walls = this.physics.add.group();
 
