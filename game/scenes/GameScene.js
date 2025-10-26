@@ -14,6 +14,7 @@ export class GameScene extends Phaser.Scene {
 
   create() {
     this.score = 0;
+    //===GROUND===
     this.ground = this.add.tileSprite(
       this.scale.width / 2,
       this.scale.height - 32,
@@ -23,38 +24,22 @@ export class GameScene extends Phaser.Scene {
     );
     this.ground.displayHeight = 64;
     this.physics.add.existing(this.ground, true);
-
+    //===PLAYER===
     this.player = this.physics.add.sprite(64, 0, "player");
     this.player.setCollideWorldBounds(true);
     this.player.displayWidth = 80;
     this.player.displayHeight = 64;
-
+    //===GAMEPLAY===
     this.physics.add.collider(this.player, this.ground);
     this.input.on("pointerdown", this.jump, this);
-
+    //===GEMS===
     this.gems = this.physics.add.group();
-    this.walls = this.physics.add.group();
-
     this.time.addEvent({
       delay: 3000 + (200 + this.score * 4),
       callback: this.spawnGem,
       callbackScope: this,
       loop: true,
     });
-
-    const wallDelay = Phaser.Math.Between(3000, 6000) + this.score * 4;
-    this.time.addEvent({
-      delay: wallDelay,
-      callback: this.spawnWall,
-      callbackScope: this,
-      loop: true,
-    });
-
-    this.scoreText = this.add.text(this.scale.width / 2, 16, "Gemme: 0 /50", {
-      fontSize: "20px",
-      fill: "#fff",
-    });
-
     this.physics.add.overlap(
       this.player,
       this.gems,
@@ -62,6 +47,15 @@ export class GameScene extends Phaser.Scene {
       null,
       this
     );
+    //===WALLS===
+    this.walls = this.physics.add.group();
+    const wallDelay = Phaser.Math.Between(3000, 6000) + this.score * 4;
+    this.time.addEvent({
+      delay: wallDelay,
+      callback: this.spawnWall,
+      callbackScope: this,
+      loop: true,
+    });
     this.physics.add.overlap(
       this.player,
       this.walls,
@@ -69,16 +63,26 @@ export class GameScene extends Phaser.Scene {
       null,
       this
     );
+    //===UI===
+    this.initUI();
   }
 
   update() {
-    this.ground.tilePositionX += 2 + Math.floor(this.score / 30);
+    this.scrollGround();
   }
 
+  initUI() {
+    this.scoreText = this.add.text(this.scale.width / 2, 16, "Gemme: 0 /50", {
+      fontSize: "20px",
+      fill: "#fff",
+    });
+  }
   jump() {
     this.player.setVelocityY(JUMP_FORCE);
   }
-
+  scrollGround() {
+    this.ground.tilePositionX += 2 + Math.floor(this.score / 30);
+  }
   spawnGem() {
     const y = Phaser.Math.Between(64, this.scale.height - 64);
     for (let i = 0; i < 3; i++) {
