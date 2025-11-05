@@ -15,7 +15,8 @@ export class GameScene extends Phaser.Scene {
   create() {
     if (this.score === undefined)
       this.score = parseInt(localStorage.getItem("score")) || 0;
-    if (this.completion === undefined) this.completion = 0;
+    if (this.level === undefined)
+      this.level = parseInt(localStorage.getItem("level")) || 0;
     if (this.objective === undefined) this.objective = INITIAL_OBJECTIVE;
     //===GROUND===
     this.ground = this.add.tileSprite(
@@ -123,9 +124,10 @@ export class GameScene extends Phaser.Scene {
     localStorage.setItem("score", this.score);
     this.scoreText.setText("Gemme: " + this.score + " /" + this.objective);
     if (this.score >= this.objective) {
-      this.completion++;
+      this.level++;
+      localStorage.setItem("level", this.level);
       this.score = 0;
-      this.objective = 15 * (this.completion + 1);
+      this.objective = 15 * (this.level + 1);
       this.scoreText.setColor("#c8c02a");
       this.scene.start("StageCompleteScene");
     }
