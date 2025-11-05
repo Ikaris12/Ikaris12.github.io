@@ -13,7 +13,8 @@ export class GameScene extends Phaser.Scene {
   }
 
   create() {
-    this.score = 0;
+    if (this.score === undefined) this.score = 0;
+    if (this.completion === undefined) this.completion = 0;
     //===GROUND===
     this.ground = this.add.tileSprite(
       this.scale.width / 2,
@@ -113,7 +114,8 @@ export class GameScene extends Phaser.Scene {
     gem.destroy();
     this.score += 1;
     this.scoreText.setText("Gemme: " + this.score + " /50");
-    if (this.score > 2) {
+    if (this.score >= (this.completion + 1) * 3) {
+      this.completion++;
       this.scoreText.setColor("#c8c02a");
       this.scene.start("StageCompleteScene");
     }
