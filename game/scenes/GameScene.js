@@ -78,7 +78,7 @@ export class GameScene extends Phaser.Scene {
     this.scoreText = this.add.text(
       this.scale.width / 2,
       16,
-      "Gemme: 0 /" + this.objective,
+      "Gemme: " + this.score + " /" + this.objective,
       {
         fontSize: "20px",
         fill: "#fff",
