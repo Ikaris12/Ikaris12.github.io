@@ -14,7 +14,7 @@ export class GameScene extends Phaser.Scene {
 
   create() {
     if (this.score === undefined)
-      this.score = localStorage.getItem("score") || 0;
+      this.score = parseInt(localStorage.getItem("score")) || 0;
     if (this.completion === undefined) this.completion = 0;
     if (this.objective === undefined) this.objective = INITIAL_OBJECTIVE;
     //===GROUND===
