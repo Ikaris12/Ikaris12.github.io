@@ -1,5 +1,5 @@
 const JUMP_FORCE = -400;
-
+const INITIAL_OBJECTIVE = 15;
 export class GameScene extends Phaser.Scene {
   constructor() {
     super("GameScene");
@@ -15,7 +15,7 @@ export class GameScene extends Phaser.Scene {
   create() {
     if (this.score === undefined) this.score = 0;
     if (this.completion === undefined) this.completion = 0;
-    if (this.objective === undefined) this.objective = 50;
+    if (this.objective === undefined) this.objective = INITIAL_OBJECTIVE;
     //===GROUND===
     this.ground = this.add.tileSprite(
       this.scale.width / 2,
@@ -122,7 +122,7 @@ export class GameScene extends Phaser.Scene {
     this.scoreText.setText("Gemme: " + this.score + " /" + this.objective);
     if (this.score >= this.objective) {
       this.completion++;
-      this.objective = 50 * (this.completion + 1);
+      this.objective = 15 * (this.completion + 1);
       this.scoreText.setColor("#c8c02a");
       this.scene.start("StageCompleteScene");
     }
