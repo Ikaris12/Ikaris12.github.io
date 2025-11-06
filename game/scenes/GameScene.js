@@ -122,7 +122,6 @@ export class GameScene extends Phaser.Scene {
   collectGem(player, gem) {
     gem.destroy();
     this.score += 1;
-    localStorage.setItem("score", this.score);
     this.scoreText.setText("Gemme: " + this.score + " /" + this.objective);
     if (this.score >= this.objective) {
       this.level++;
@@ -132,6 +131,7 @@ export class GameScene extends Phaser.Scene {
       this.scoreText.setColor("#c8c02a");
       this.scene.start("StageCompleteScene");
     }
+    localStorage.setItem("score", this.score);
   }
 
   gameOver() {
