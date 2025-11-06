@@ -13,12 +13,14 @@ export class GameScene extends Phaser.Scene {
   }
 
   create() {
+    if (this.currency === undefined)
+      this.currency = parseInt(localStorage.getItem("currency")) || 0;
     if (this.score === undefined)
       this.score = parseInt(localStorage.getItem("score")) || 0;
     if (this.level === undefined)
-      this.level = parseInt(localStorage.getItem("level")) || 0;
+      this.level = parseInt(localStorage.getItem("level")) || 1;
     if (this.objective === undefined)
-      this.objective = (this.level + 1) * INITIAL_OBJECTIVE;
+      this.objective = this.level * INITIAL_OBJECTIVE;
     //===GROUND===
     this.ground = this.add.tileSprite(
       this.scale.width / 2,
@@ -78,9 +80,18 @@ export class GameScene extends Phaser.Scene {
 
   initUI() {
     this.scoreText = this.add.text(
-      this.scale.width / 2,
+      this.scale.width / 4,
       16,
       "Gemme: " + this.score + " /" + this.objective,
+      {
+        fontSize: "20px",
+        fill: "#fff",
+      }
+    );
+    this.levelText = this.add.text(
+      (this.scale.width * 3) / 4,
+      16,
+      "Livello: " + this.level,
       {
         fontSize: "20px",
         fill: "#fff",
@@ -119,18 +130,21 @@ export class GameScene extends Phaser.Scene {
     }
   }
 
-  collectGem(player, gem) {
+  collectGem(gem) {
     gem.destroy();
     this.score += 1;
     this.scoreText.setText("Gemme: " + this.score + " /" + this.objective);
+    this.currency += 1 * this.level;
     if (this.score >= this.objective) {
       this.level++;
       localStorage.setItem("level", this.level);
       this.score = 0;
-      this.objective = 15 * (this.level + 1);
+      this.objective = 15 * this.level;
+      this.currency += 10 * this.level;
       this.scoreText.setColor("#c8c02a");
       this.scene.start("StageCompleteScene");
     }
+    localStorage.setItem("currency", this.currency);
     localStorage.setItem("score", this.score);
   }
 
@@ -148,14 +162,12 @@ export class GameScene extends Phaser.Scene {
       )
       .setDepth(10);
 
-    const textColor = this.score > 49 ? "#c8c02a" : "#ffffff";
-
     this.add
       .text(
         this.scale.width / 2,
         this.scale.height / 2 - 50,
         `Hai perso!\nPunteggio:\n${this.score}`,
-        { fontSize: "32px", fill: textColor, align: "center" }
+        { fontSize: "32px", fill: "#ffffff", align: "center" }
       )
       .setOrigin(0.5)
       .setDepth(11);
