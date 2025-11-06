@@ -130,7 +130,7 @@ export class GameScene extends Phaser.Scene {
     }
   }
 
-  collectGem(gem) {
+  collectGem(player, gem) {
     gem.destroy();
     this.score += 1;
     this.scoreText.setText("Gemme: " + this.score + " /" + this.objective);
