@@ -17,7 +17,8 @@ export class GameScene extends Phaser.Scene {
       this.score = parseInt(localStorage.getItem("score")) || 0;
     if (this.level === undefined)
       this.level = parseInt(localStorage.getItem("level")) || 0;
-    if (this.objective === undefined) this.objective = INITIAL_OBJECTIVE;
+    if (this.objective === undefined)
+      this.objective = (this.level + 1) * INITIAL_OBJECTIVE;
     //===GROUND===
     this.ground = this.add.tileSprite(
       this.scale.width / 2,
