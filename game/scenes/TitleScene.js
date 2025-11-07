@@ -7,14 +7,19 @@ export class TitleScene extends Phaser.Scene {
     this.cameras.main.setBackgroundColor("#000000");
 
     this.add
-      .text(this.scale.width / 2, this.scale.height / 2 - 100, "MOO 'N' RUN", {
-        fontSize: "48px",
-        fill: "#ffffff",
-      })
+      .text(
+        this.scale.width / 2,
+        this.scale.height / 2 - 100,
+        "Silipetto Studios 1001 Games",
+        {
+          fontSize: "48px",
+          fill: "#ffffff",
+        }
+      )
       .setOrigin(0.5);
 
     const startButton = this.add
-      .text(this.scale.width / 2, this.scale.height / 2 + 20, "INIZIA", {
+      .text(this.scale.width / 2, this.scale.height / 2 + 20, "Moo 'N' Run", {
         fontSize: "36px",
         fill: "#00ff00",
         backgroundColor: "#222",
