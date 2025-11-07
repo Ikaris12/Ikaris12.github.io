@@ -132,13 +132,18 @@ export class CandyTrash extends Phaser.Scene {
 
   // ---------- GRIGLIA ----------
   createGrid() {
-    const offsetY = 130;
+    const offsetY = 160;
+    const gridWidth = this.cols * this.tileSize;
+    const gridHeight = this.rows * this.tileSize;
+    const startX = (this.sys.game.config.width - gridWidth) / 2;
+    const startY = (this.sys.game.config.height - gridHeight) / 2 + offsetY / 2;
+
     for (let row = 0; row < this.rows; row++) {
       this.grid[row] = [];
       for (let col = 0; col < this.cols; col++) {
         const color = Phaser.Utils.Array.GetRandom(this.colors);
-        const x = col * this.tileSize + this.tileSize / 2;
-        const y = row * this.tileSize + this.tileSize / 2 + offsetY;
+        const x = startX + col * this.tileSize + this.tileSize / 2;
+        const y = startY + row * this.tileSize + this.tileSize / 2;
         const tile = this.add
           .rectangle(x, y, this.tileSize - 4, this.tileSize - 4, color)
           .setOrigin(0.5);
@@ -149,6 +154,7 @@ export class CandyTrash extends Phaser.Scene {
         this.grid[row][col] = tile;
       }
     }
+    this.gridStart = { x: startX, y: startY };
     this.checkMatches(true);
   }
 
@@ -164,19 +170,32 @@ export class CandyTrash extends Phaser.Scene {
   }
 
   selectTile(pointer, tile) {
+    if (this.selectedTile === tile) {
+      // Deseleziona
+      this.tweens.add({
+        targets: tile,
+        scale: 1,
+        duration: 100,
+      });
+      this.selectedTile = null;
+      return;
+    }
+
     if (!this.selectedTile) {
       this.selectedTile = tile;
       this.tweens.add({
         targets: tile,
-        scale: 1.2,
+        scale: 0.85,
         duration: 100,
-        yoyo: true,
       });
     } else if (this.areAdjacent(this.selectedTile, tile)) {
-      this.swapTiles(this.selectedTile, tile);
+      this.swapTilesAnimated(this.selectedTile, tile);
+      this.tweens.add({ targets: this.selectedTile, scale: 1, duration: 100 });
       this.selectedTile = null;
     } else {
+      this.tweens.add({ targets: this.selectedTile, scale: 1, duration: 100 });
       this.selectedTile = tile;
+      this.tweens.add({ targets: tile, scale: 0.85, duration: 100 });
     }
   }
 
@@ -186,16 +205,46 @@ export class CandyTrash extends Phaser.Scene {
     return dx + dy === 1;
   }
 
-  swapTiles(a, b) {
-    const tempColor = a.fillColor;
+  swapTilesAnimated(a, b) {
+    const tempColor = a.color;
+    a.color = b.color;
+    b.color = tempColor;
+
+    const tempFill = a.fillColor;
     a.fillColor = b.fillColor;
-    b.fillColor = tempColor;
+    b.fillColor = tempFill;
 
     const tempColorProp = a.color;
     a.color = b.color;
     b.color = tempColorProp;
 
-    this.checkMatches();
+    const tempX = a.x,
+      tempY = a.y;
+    this.tweens.add({
+      targets: a,
+      x: b.x,
+      y: b.y,
+      duration: 150,
+      ease: "Sine.easeInOut",
+    });
+    this.tweens.add({
+      targets: b,
+      x: tempX,
+      y: tempY,
+      duration: 150,
+      ease: "Sine.easeInOut",
+      onComplete: () => {
+        const tempRow = a.row,
+          tempCol = a.col;
+        a.row = b.row;
+        a.col = b.col;
+        b.row = tempRow;
+        b.col = tempCol;
+        this.grid[a.row][a.col] = a;
+        this.grid[b.row][b.col] = b;
+        this.checkMatches();
+      },
+    });
   }
 
   // ---------- MATCHING ----------
@@ -241,10 +290,21 @@ export class CandyTrash extends Phaser.Scene {
       this.updateInfoText();
       this.updateConfirmButtonState();
 
+      // animazione: flash bianco e fade out
+      matched.forEach((tile) => {
+        this.tweens.add({
+          targets: tile,
+          fillColor: 0xffffff,
+          duration: 100,
+          yoyo: true,
+        });
+      });
+
       this.tweens.add({
         targets: Array.from(matched),
         alpha: 0,
-        duration: 200,
+        duration: 300,
+        delay: 100,
         onComplete: () => {
           this.removeMatched(Array.from(matched));
         },
@@ -269,7 +329,8 @@ export class CandyTrash extends Phaser.Scene {
           this.tweens.add({
             targets: tile,
             y: targetY,
-            duration: 200,
+            duration: 250,
+            ease: "Sine.easeInOut",
             onComplete: () => (tile.row += emptySpots),
           });
           this.grid[row + emptySpots][col] = tile;
@@ -279,8 +340,8 @@ export class CandyTrash extends Phaser.Scene {
 
       for (let i = 0; i < emptySpots; i++) {
         const color = Phaser.Utils.Array.GetRandom(this.colors);
-        const x = col * this.tileSize + this.tileSize / 2;
-        const y = -i * this.tileSize + 130 + this.tileSize / 2;
+        const x = this.gridStart.x + col * this.tileSize + this.tileSize / 2;
+        const y = this.gridStart.y - i * this.tileSize;
         const tile = this.add
           .rectangle(x, y, this.tileSize - 4, this.tileSize - 4, color)
           .setOrigin(0.5);
@@ -292,24 +353,33 @@ export class CandyTrash extends Phaser.Scene {
 
         this.tweens.add({
           targets: tile,
-          y: i * this.tileSize + this.tileSize / 2 + 130,
-          duration: 250,
+          y: this.gridStart.y + i * this.tileSize + this.tileSize / 2,
+          duration: 300,
+          ease: "Sine.easeIn",
         });
       }
     }
 
-    this.time.delayedCall(350, () => this.checkMatches());
+    this.time.delayedCall(400, () => this.checkMatches());
   }
 
   // ---------- GAME OVER ----------
   checkPossibleMoves() {
     const canMove = this.hasPossibleMatch();
     if (!canMove) {
-      this.add.text(150, 350, "GAME OVER", {
-        fontSize: "48px",
-        color: "#ff3333",
-      });
+      const { width, height } = this.sys.game.config;
+      const bg = this.add
+        .rectangle(width / 2, height / 2, 300, 100, 0x444444, 0.8)
+        .setOrigin(0.5);
+      const text = this.add
+        .text(width / 2, height / 2, "GAME OVER", {
+          fontSize: "48px",
+          color: "#ff3333",
+        })
+        .setOrigin(0.5);
       this.input.removeAllListeners();
+      bg.depth = 1000;
+      text.depth = 1001;
     }
   }
 
@@ -338,14 +408,9 @@ export class CandyTrash extends Phaser.Scene {
     const temp = a.color;
     a.color = b.color;
     b.color = temp;
-
     const result = this.findAnyMatch();
-
-    // reset
-    const temp2 = a.color;
     a.color = b.color;
-    b.color = temp2;
-
+    b.color = temp;
     return result;
   }
 
