@@ -7,37 +7,19 @@ export class CandyTrash extends Phaser.Scene {
     this.colors = [0xff0000, 0x00ff00, 0x0000ff, 0xffff00, 0xff00ff];
     this.grid = [];
     this.selectedTile = null;
-    this.matchLength = 3; // valore minimo per la combinazione
+    this.matchLength = 3; // valore attivo (salvato)
+    this.tempMatchLength = 3; // valore dello slider in anteprima
+    this.score = 0;
   }
 
   create() {
+    this.createUI();
     this.createGrid();
-    this.createSlider();
     this.input.on("gameobjectdown", this.selectTile, this);
   }
 
-  createGrid() {
-    const offsetY = 100; // spazio per lo slider
-    for (let row = 0; row < this.rows; row++) {
-      this.grid[row] = [];
-      for (let col = 0; col < this.cols; col++) {
-        const color = Phaser.Utils.Array.GetRandom(this.colors);
-        const x = col * this.tileSize + this.tileSize / 2;
-        const y = row * this.tileSize + this.tileSize / 2 + offsetY;
-        const tile = this.add
-          .rectangle(x, y, this.tileSize - 4, this.tileSize - 4, color)
-          .setOrigin(0.5);
-        tile.row = row;
-        tile.col = col;
-        tile.color = color;
-        tile.setInteractive();
-        this.grid[row][col] = tile;
-      }
-    }
-    this.checkMatches(true);
-  }
-
-  createSlider() {
+  // ---------- UI ----------
+  createUI() {
     const sliderX = 100;
     const sliderY = 40;
 
@@ -57,39 +39,106 @@ export class CandyTrash extends Phaser.Scene {
       .setInteractive({ draggable: true });
     this.sliderHandle = handle;
 
-    // testo del valore
+    // simbolo che mostra il valore confermato
+    this.savedIndicator = this.add
+      .circle(sliderX, sliderY, 6, 0x00ff00)
+      .setOrigin(0.5);
+
+    // testo valore
     this.sliderText = this.add.text(
       sliderX + 170,
       sliderY - 10,
-      this.matchLength.toString(),
+      this.tempMatchLength.toString(),
       { fontSize: "18px", color: "#fff" }
     );
 
-    // limiti in pixel
+    // limiti slider
     const minX = sliderX;
     const maxX = sliderX + 150;
-
     this.input.setDraggable(handle);
 
     handle.on("drag", (pointer, dragX) => {
       dragX = Phaser.Math.Clamp(dragX, minX, maxX);
       handle.x = dragX;
-
-      // calcola il valore in base alla posizione
       const t = (dragX - minX) / (maxX - minX);
-      const newValue = Math.round(3 + t * 2); // range 3-5
-      this.matchLength = newValue;
+      const newValue = Math.round(3 + t * 2);
+      this.tempMatchLength = newValue;
       this.sliderText.setText(newValue.toString());
+      this.updateInfoText();
     });
 
-    this.add.text(sliderX, sliderY + 20, "← 3", {
+    // pulsante conferma
+    const confirmBtn = this.add
+      .text(sliderX + 200, sliderY - 15, "Conferma (-5)", {
+        fontSize: "14px",
+        color: "#0ff",
+        backgroundColor: "#333",
+        padding: { x: 6, y: 4 },
+      })
+      .setInteractive()
+      .on("pointerdown", () => this.confirmMatchLength());
+
+    // testi informativi
+    this.scoreText = this.add.text(20, 70, "Punteggio: 0", {
+      fontSize: "18px",
+      color: "#fff",
+    });
+    this.infoText = this.add.text(20, 95, "", {
       fontSize: "14px",
       color: "#aaa",
     });
-    this.add.text(sliderX + 150 - 10, sliderY + 20, "5 →", {
-      fontSize: "14px",
-      color: "#aaa",
-    });
+    this.updateInfoText();
+  }
+
+  updateInfoText() {
+    this.infoText.setText(
+      `Match attivo: ${this.matchLength} | Slider: ${this.tempMatchLength} | +${
+        (this.tempMatchLength - 2) * 10
+      }pt`
+    );
+  }
+
+  confirmMatchLength() {
+    if (this.score >= 5) {
+      this.score -= 5;
+      this.matchLength = this.tempMatchLength;
+      this.savedIndicator.x = this.sliderHandle.x;
+      this.savedIndicator.fillColor = 0x00ff00;
+      this.updateScore();
+      this.updateInfoText();
+    } else {
+      this.savedIndicator.fillColor = 0xff0000;
+      this.time.delayedCall(
+        500,
+        () => (this.savedIndicator.fillColor = 0x00ff00)
+      );
+    }
+  }
+
+  updateScore() {
+    this.scoreText.setText(`Punteggio: ${this.score}`);
+  }
+
+  // ---------- GRIGLIA ----------
+  createGrid() {
+    const offsetY = 130;
+    for (let row = 0; row < this.rows; row++) {
+      this.grid[row] = [];
+      for (let col = 0; col < this.cols; col++) {
+        const color = Phaser.Utils.Array.GetRandom(this.colors);
+        const x = col * this.tileSize + this.tileSize / 2;
+        const y = row * this.tileSize + this.tileSize / 2 + offsetY;
+        const tile = this.add
+          .rectangle(x, y, this.tileSize - 4, this.tileSize - 4, color)
+          .setOrigin(0.5);
+        tile.row = row;
+        tile.col = col;
+        tile.color = color;
+        tile.setInteractive();
+        this.grid[row][col] = tile;
+      }
+    }
+    this.checkMatches(true);
   }
 
   selectTile(pointer, tile) {
@@ -127,16 +176,17 @@ export class CandyTrash extends Phaser.Scene {
     this.checkMatches();
   }
 
+  // ---------- MATCHING ----------
   checkMatches(initial = false) {
     let matched = new Set();
 
-    // --- ORIZZONTALI ---
+    // orizzontali
     for (let row = 0; row < this.rows; row++) {
       let chain = [this.grid[row][0]];
       for (let col = 1; col < this.cols; col++) {
-        if (this.grid[row][col].color === chain[0].color) {
+        if (this.grid[row][col].color === chain[0].color)
           chain.push(this.grid[row][col]);
-        } else {
+        else {
           if (chain.length >= this.matchLength)
             chain.forEach((t) => matched.add(t));
           chain = [this.grid[row][col]];
@@ -146,13 +196,13 @@ export class CandyTrash extends Phaser.Scene {
         chain.forEach((t) => matched.add(t));
     }
 
-    // --- VERTICALI ---
+    // verticali
     for (let col = 0; col < this.cols; col++) {
       let chain = [this.grid[0][col]];
       for (let row = 1; row < this.rows; row++) {
-        if (this.grid[row][col].color === chain[0].color) {
+        if (this.grid[row][col].color === chain[0].color)
           chain.push(this.grid[row][col]);
-        } else {
+        else {
           if (chain.length >= this.matchLength)
             chain.forEach((t) => matched.add(t));
           chain = [this.grid[row][col]];
@@ -162,8 +212,12 @@ export class CandyTrash extends Phaser.Scene {
         chain.forEach((t) => matched.add(t));
     }
 
-    // --- GESTIONE MATCH ---
     if (matched.size > 0) {
+      const gain = matched.size * 10 * (this.matchLength - 2);
+      this.score += gain;
+      this.updateScore();
+      this.updateInfoText();
+
       this.tweens.add({
         targets: Array.from(matched),
         alpha: 0,
@@ -179,12 +233,58 @@ export class CandyTrash extends Phaser.Scene {
     }
   }
 
+  // ---------- RIMOZIONE + CADUTA ----------
   removeMatched(matched) {
-    matched.forEach((tile) => {
-      tile.color = Phaser.Utils.Array.GetRandom(this.colors);
-      tile.fillColor = tile.color;
-      tile.alpha = 1;
-    });
-    this.time.delayedCall(300, () => this.checkMatches());
+    // Sostituisce i tile eliminati con "vuoti"
+    matched.forEach((tile) => (tile.color = null));
+
+    // per ogni colonna, fa "cadere" i blocchi
+    for (let col = 0; col < this.cols; col++) {
+      let emptySpots = 0;
+      for (let row = this.rows - 1; row >= 0; row--) {
+        const tile = this.grid[row][col];
+        if (tile.color === null) {
+          emptySpots++;
+        } else if (emptySpots > 0) {
+          const targetY = tile.y + emptySpots * this.tileSize;
+          this.tweens.add({
+            targets: tile,
+            y: targetY,
+            duration: 200,
+            onComplete: () => {
+              tile.row += emptySpots;
+            },
+          });
+          this.grid[row + emptySpots][col] = tile;
+          this.grid[row][col] = { color: null };
+        }
+      }
+
+      // genera nuovi tile in cima
+      for (let i = 0; i < emptySpots; i++) {
+        const color = Phaser.Utils.Array.GetRandom(this.colors);
+        const x = col * this.tileSize + this.tileSize / 2;
+        const y = -i * this.tileSize + 130 + this.tileSize / 2;
+        const tile = this.add
+          .rectangle(x, y, this.tileSize - 4, this.tileSize - 4, color)
+          .setOrigin(0.5);
+        tile.color = color;
+        tile.row = i;
+        tile.col = col;
+        tile.setInteractive();
+
+        this.grid[i][col] = tile;
+
+        // animazione di caduta
+        this.tweens.add({
+          targets: tile,
+          y: i * this.tileSize + this.tileSize / 2 + 130,
+          duration: 250,
+        });
+      }
+    }
+
+    // dopo le animazioni, controlla nuovi match
+    this.time.delayedCall(350, () => this.checkMatches());
   }
 }
