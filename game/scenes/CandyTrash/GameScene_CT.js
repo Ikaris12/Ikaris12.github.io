@@ -1,26 +1,31 @@
+import Phaser from "phaser";
+
 export class CandyTrash extends Phaser.Scene {
   constructor() {
     super("CandyTrash");
     this.rows = 8;
     this.cols = 8;
     this.tileSize = 64;
-    this.colors = [0xff0000, 0x00ff00, 0x0000ff, 0xffff00, 0xff00ff]; // rosso, verde, blu, giallo, viola
+    this.colors = [0xff0000, 0x00ff00, 0x0000ff, 0xffff00, 0xff00ff];
     this.grid = [];
     this.selectedTile = null;
+    this.matchLength = 3; // valore minimo per la combinazione
   }
 
   create() {
     this.createGrid();
+    this.createSlider();
     this.input.on("gameobjectdown", this.selectTile, this);
   }
 
   createGrid() {
+    const offsetY = 100; // spazio per lo slider
     for (let row = 0; row < this.rows; row++) {
       this.grid[row] = [];
       for (let col = 0; col < this.cols; col++) {
         const color = Phaser.Utils.Array.GetRandom(this.colors);
         const x = col * this.tileSize + this.tileSize / 2;
-        const y = row * this.tileSize + this.tileSize / 2;
+        const y = row * this.tileSize + this.tileSize / 2 + offsetY;
         const tile = this.add
           .rectangle(x, y, this.tileSize - 4, this.tileSize - 4, color)
           .setOrigin(0.5);
@@ -32,6 +37,61 @@ export class CandyTrash extends Phaser.Scene {
       }
     }
     this.checkMatches(true);
+  }
+
+  createSlider() {
+    const sliderX = 100;
+    const sliderY = 40;
+
+    this.add.text(20, sliderY - 10, "Match:", {
+      fontSize: "18px",
+      color: "#fff",
+    });
+
+    // barra base
+    const bar = this.add
+      .rectangle(sliderX, sliderY, 150, 6, 0x888888)
+      .setOrigin(0, 0.5);
+
+    // cursore
+    const handle = this.add
+      .circle(sliderX, sliderY, 10, 0xffffff)
+      .setInteractive({ draggable: true });
+    this.sliderHandle = handle;
+
+    // testo del valore
+    this.sliderText = this.add.text(
+      sliderX + 170,
+      sliderY - 10,
+      this.matchLength.toString(),
+      { fontSize: "18px", color: "#fff" }
+    );
+
+    // limiti in pixel
+    const minX = sliderX;
+    const maxX = sliderX + 150;
+
+    this.input.setDraggable(handle);
+
+    handle.on("drag", (pointer, dragX) => {
+      dragX = Phaser.Math.Clamp(dragX, minX, maxX);
+      handle.x = dragX;
+
+      // calcola il valore in base alla posizione
+      const t = (dragX - minX) / (maxX - minX);
+      const newValue = Math.round(3 + t * 2); // range 3-5
+      this.matchLength = newValue;
+      this.sliderText.setText(newValue.toString());
+    });
+
+    this.add.text(sliderX, sliderY + 20, "← 3", {
+      fontSize: "14px",
+      color: "#aaa",
+    });
+    this.add.text(sliderX + 150 - 10, sliderY + 20, "5 →", {
+      fontSize: "14px",
+      color: "#aaa",
+    });
   }
 
   selectTile(pointer, tile) {
@@ -70,44 +130,51 @@ export class CandyTrash extends Phaser.Scene {
   }
 
   checkMatches(initial = false) {
-    let matched = [];
+    let matched = new Set();
 
-    // Orizzontali
+    // --- ORIZZONTALI ---
     for (let row = 0; row < this.rows; row++) {
-      for (let col = 0; col < this.cols - 2; col++) {
-        const c1 = this.grid[row][col];
-        const c2 = this.grid[row][col + 1];
-        const c3 = this.grid[row][col + 2];
-        if (c1.color === c2.color && c1.color === c3.color) {
-          matched.push(c1, c2, c3);
+      let chain = [this.grid[row][0]];
+      for (let col = 1; col < this.cols; col++) {
+        if (this.grid[row][col].color === chain[0].color) {
+          chain.push(this.grid[row][col]);
+        } else {
+          if (chain.length >= this.matchLength)
+            chain.forEach((t) => matched.add(t));
+          chain = [this.grid[row][col]];
         }
       }
+      if (chain.length >= this.matchLength)
+        chain.forEach((t) => matched.add(t));
     }
 
-    // Verticali
+    // --- VERTICALI ---
     for (let col = 0; col < this.cols; col++) {
-      for (let row = 0; row < this.rows - 2; row++) {
-        const c1 = this.grid[row][col];
-        const c2 = this.grid[row + 1][col];
-        const c3 = this.grid[row + 2][col];
-        if (c1.color === c2.color && c1.color === c3.color) {
-          matched.push(c1, c2, c3);
+      let chain = [this.grid[0][col]];
+      for (let row = 1; row < this.rows; row++) {
+        if (this.grid[row][col].color === chain[0].color) {
+          chain.push(this.grid[row][col]);
+        } else {
+          if (chain.length >= this.matchLength)
+            chain.forEach((t) => matched.add(t));
+          chain = [this.grid[row][col]];
         }
       }
+      if (chain.length >= this.matchLength)
+        chain.forEach((t) => matched.add(t));
     }
 
-    if (matched.length > 0) {
-      matched = [...new Set(matched)];
+    // --- GESTIONE MATCH ---
+    if (matched.size > 0) {
       this.tweens.add({
-        targets: matched,
+        targets: Array.from(matched),
         alpha: 0,
         duration: 200,
         onComplete: () => {
-          this.removeMatched(matched);
+          this.removeMatched(Array.from(matched));
         },
       });
     } else if (!initial) {
-      // nessuna combinazione: reset visivo
       this.time.delayedCall(200, () => {
         this.grid.forEach((row) => row.forEach((tile) => tile.setAlpha(1)));
       });
