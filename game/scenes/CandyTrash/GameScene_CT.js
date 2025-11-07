@@ -1,5 +1,3 @@
-import Phaser from "phaser";
-
 export class CandyTrash extends Phaser.Scene {
   constructor() {
     super("CandyTrash");
