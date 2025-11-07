@@ -13,6 +13,10 @@ export class CandyTrash extends Phaser.Scene {
     this.changeCost = 100;
   }
 
+  preload() {
+    this.load.image("green_gem", "game/assets/images/green_gem/green_gem1.png");
+  }
+
   create() {
     this.createUI();
     this.createGrid();
@@ -32,6 +36,7 @@ export class CandyTrash extends Phaser.Scene {
     const bar = this.add
       .rectangle(sliderX, sliderY, 150, 6, 0x888888)
       .setOrigin(0, 0.5);
+
     const handle = this.add
       .circle(sliderX, sliderY, 10, 0xffffff)
       .setInteractive({ draggable: true });
@@ -40,6 +45,7 @@ export class CandyTrash extends Phaser.Scene {
     this.savedIndicator = this.add
       .circle(sliderX, sliderY, 6, 0x00ff00)
       .setOrigin(0.5);
+
     this.sliderText = this.add.text(
       sliderX + 170,
       sliderY - 10,
@@ -114,8 +120,6 @@ export class CandyTrash extends Phaser.Scene {
       this.updateScore();
       this.updateInfoText();
       this.updateConfirmButtonState();
-
-      // Randomizza la griglia
       this.randomizeGrid();
     } else {
       this.savedIndicator.fillColor = 0xff0000;
@@ -142,15 +146,7 @@ export class CandyTrash extends Phaser.Scene {
       this.grid[row] = [];
       for (let col = 0; col < this.cols; col++) {
         const color = Phaser.Utils.Array.GetRandom(this.colors);
-        const x = startX + col * this.tileSize + this.tileSize / 2;
-        const y = startY + row * this.tileSize + this.tileSize / 2;
-        const tile = this.add
-          .rectangle(x, y, this.tileSize - 4, this.tileSize - 4, color)
-          .setOrigin(0.5);
-        tile.row = row;
-        tile.col = col;
-        tile.color = color;
-        tile.setInteractive();
+        const tile = this.createTile(color, startX, startY, row, col);
         this.grid[row][col] = tile;
       }
     }
@@ -158,36 +154,59 @@ export class CandyTrash extends Phaser.Scene {
     this.checkMatches(true);
   }
 
+  createTile(color, startX, startY, row, col) {
+    const x = startX + col * this.tileSize + this.tileSize / 2;
+    const y = startY + row * this.tileSize + this.tileSize / 2;
+
+    let tile;
+    if (color === 0x00ff00) {
+      // Gemma verde
+      tile = this.add
+        .image(x, y, "green_gem")
+        .setDisplaySize(this.tileSize - 8, this.tileSize - 8);
+    } else {
+      // Quadrato colorato
+      tile = this.add
+        .rectangle(x, y, this.tileSize - 4, this.tileSize - 4, color)
+        .setOrigin(0.5);
+    }
+
+    tile.row = row;
+    tile.col = col;
+    tile.color = color;
+    tile.setInteractive();
+    return tile;
+  }
+
   randomizeGrid() {
     for (let row = 0; row < this.rows; row++) {
       for (let col = 0; col < this.cols; col++) {
-        const tile = this.grid[row][col];
-        tile.color = Phaser.Utils.Array.GetRandom(this.colors);
-        tile.fillColor = tile.color;
+        const oldTile = this.grid[row][col];
+        oldTile.destroy();
+        const color = Phaser.Utils.Array.GetRandom(this.colors);
+        this.grid[row][col] = this.createTile(
+          color,
+          this.gridStart.x,
+          this.gridStart.y,
+          row,
+          col
+        );
       }
     }
     this.checkMatches(true);
   }
 
+  // ---------- Selezione e Scambio ----------
   selectTile(pointer, tile) {
     if (this.selectedTile === tile) {
-      // Deseleziona
-      this.tweens.add({
-        targets: tile,
-        scale: 1,
-        duration: 100,
-      });
+      this.tweens.add({ targets: tile, scale: 1, duration: 100 });
       this.selectedTile = null;
       return;
     }
 
     if (!this.selectedTile) {
       this.selectedTile = tile;
-      this.tweens.add({
-        targets: tile,
-        scale: 0.85,
-        duration: 100,
-      });
+      this.tweens.add({ targets: tile, scale: 0.85, duration: 100 });
     } else if (this.areAdjacent(this.selectedTile, tile)) {
       this.swapTilesAnimated(this.selectedTile, tile);
       this.tweens.add({ targets: this.selectedTile, scale: 1, duration: 100 });
@@ -209,14 +228,6 @@ export class CandyTrash extends Phaser.Scene {
     const tempColor = a.color;
     a.color = b.color;
     b.color = tempColor;
-
-    const tempFill = a.fillColor;
-    a.fillColor = b.fillColor;
-    b.fillColor = tempFill;
-
-    const tempColorProp = a.color;
-    a.color = b.color;
-    b.color = tempColorProp;
 
     const tempX = a.x,
       tempY = a.y;

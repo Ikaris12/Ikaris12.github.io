@@ -1,5 +1,7 @@
 const JUMP_FORCE = -400;
 const INITIAL_OBJECTIVE = 15;
+const GEM_H = 64;
+const GEM_W = 64;
 export class GameScene extends Phaser.Scene {
   constructor() {
     super("GameScene");
@@ -112,8 +114,8 @@ export class GameScene extends Phaser.Scene {
         y,
         "gems"
       );
-      gem.displayWidth = 30;
-      gem.displayHeight = 30;
+      gem.displayWidth = GEM_W;
+      gem.displayHeight = GEM_H;
       gem.setVelocityX(-200 - this.score * 4);
       gem.setGravityY(-800);
     }
