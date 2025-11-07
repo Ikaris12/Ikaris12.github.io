@@ -1,7 +1,7 @@
 import { TitleScene } from "./game/scenes/TitleScene.js";
 import { GameScene } from "./game/scenes/GameScene.js";
 import { StageCompleteScene } from "./game/scenes/StageCompleteScene.js";
-import { CandyTrash } from ".game/scenes/CandyTrash/GameScene_CT.js";
+import { CandyTrash } from "./game/scenes/CandyTrash/GameScene_CT.js";
 const config = {
   type: Phaser.AUTO,
   pixelArt: true,
