@@ -8,7 +8,7 @@ export class GameScene extends Phaser.Scene {
   preload() {
     this.load.image("player", "game/assets/images/redblack.png");
     this.load.image("ground", "game/assets/images/moonfloor.png");
-    this.load.image("gems", "game/assets/images/emerald.png");
+    this.load.image("gems", "game/assets/images/green_gem/green_gem1.png");
     this.load.image("walls", "game/assets/images/prociolois.png");
   }
 
@@ -113,7 +113,7 @@ export class GameScene extends Phaser.Scene {
         "gems"
       );
       gem.displayWidth = 30;
-      gem.displayHeight = 25;
+      gem.displayHeight = 30;
       gem.setVelocityX(-200 - this.score * 4);
       gem.setGravityY(-800);
     }
