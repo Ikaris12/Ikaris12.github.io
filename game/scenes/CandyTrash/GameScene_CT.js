@@ -7,9 +7,10 @@ export class CandyTrash extends Phaser.Scene {
     this.colors = [0xff0000, 0x00ff00, 0x0000ff, 0xffff00, 0xff00ff];
     this.grid = [];
     this.selectedTile = null;
-    this.matchLength = 3; // valore attivo (salvato)
-    this.tempMatchLength = 3; // valore dello slider in anteprima
+    this.matchLength = 3;
+    this.tempMatchLength = 3;
     this.score = 0;
+    this.changeCost = 100;
   }
 
   create() {
@@ -28,23 +29,17 @@ export class CandyTrash extends Phaser.Scene {
       color: "#fff",
     });
 
-    // barra base
     const bar = this.add
       .rectangle(sliderX, sliderY, 150, 6, 0x888888)
       .setOrigin(0, 0.5);
-
-    // cursore
     const handle = this.add
       .circle(sliderX, sliderY, 10, 0xffffff)
       .setInteractive({ draggable: true });
     this.sliderHandle = handle;
 
-    // simbolo che mostra il valore confermato
     this.savedIndicator = this.add
       .circle(sliderX, sliderY, 6, 0x00ff00)
       .setOrigin(0.5);
-
-    // testo valore
     this.sliderText = this.add.text(
       sliderX + 170,
       sliderY - 10,
@@ -52,7 +47,6 @@ export class CandyTrash extends Phaser.Scene {
       { fontSize: "18px", color: "#fff" }
     );
 
-    // limiti slider
     const minX = sliderX;
     const maxX = sliderX + 150;
     this.input.setDraggable(handle);
@@ -65,11 +59,11 @@ export class CandyTrash extends Phaser.Scene {
       this.tempMatchLength = newValue;
       this.sliderText.setText(newValue.toString());
       this.updateInfoText();
+      this.updateConfirmButtonState();
     });
 
-    // pulsante conferma
-    const confirmBtn = this.add
-      .text(sliderX + 200, sliderY - 15, "Conferma (-5)", {
+    this.confirmBtn = this.add
+      .text(sliderX + 200, sliderY - 15, `Conferma (-${this.changeCost})`, {
         fontSize: "14px",
         color: "#0ff",
         backgroundColor: "#333",
@@ -78,7 +72,6 @@ export class CandyTrash extends Phaser.Scene {
       .setInteractive()
       .on("pointerdown", () => this.confirmMatchLength());
 
-    // testi informativi
     this.scoreText = this.add.text(20, 70, "Punteggio: 0", {
       fontSize: "18px",
       color: "#fff",
@@ -87,7 +80,9 @@ export class CandyTrash extends Phaser.Scene {
       fontSize: "14px",
       color: "#aaa",
     });
+
     this.updateInfoText();
+    this.updateConfirmButtonState();
   }
 
   updateInfoText() {
@@ -98,14 +93,30 @@ export class CandyTrash extends Phaser.Scene {
     );
   }
 
+  updateConfirmButtonState() {
+    const canBuy =
+      this.score >= this.changeCost &&
+      this.tempMatchLength !== this.matchLength;
+    this.confirmBtn.setAlpha(canBuy ? 1 : 0.3);
+    this.confirmBtn.disableInteractive();
+    if (canBuy) this.confirmBtn.setInteractive();
+  }
+
   confirmMatchLength() {
-    if (this.score >= 5) {
-      this.score -= 5;
+    if (
+      this.score >= this.changeCost &&
+      this.tempMatchLength !== this.matchLength
+    ) {
+      this.score -= this.changeCost;
       this.matchLength = this.tempMatchLength;
       this.savedIndicator.x = this.sliderHandle.x;
       this.savedIndicator.fillColor = 0x00ff00;
       this.updateScore();
       this.updateInfoText();
+      this.updateConfirmButtonState();
+
+      // Randomizza la griglia
+      this.randomizeGrid();
     } else {
       this.savedIndicator.fillColor = 0xff0000;
       this.time.delayedCall(
@@ -136,6 +147,17 @@ export class CandyTrash extends Phaser.Scene {
         tile.color = color;
         tile.setInteractive();
         this.grid[row][col] = tile;
+      }
+    }
+    this.checkMatches(true);
+  }
+
+  randomizeGrid() {
+    for (let row = 0; row < this.rows; row++) {
+      for (let col = 0; col < this.cols; col++) {
+        const tile = this.grid[row][col];
+        tile.color = Phaser.Utils.Array.GetRandom(this.colors);
+        tile.fillColor = tile.color;
       }
     }
     this.checkMatches(true);
@@ -217,6 +239,7 @@ export class CandyTrash extends Phaser.Scene {
       this.score += gain;
       this.updateScore();
       this.updateInfoText();
+      this.updateConfirmButtonState();
 
       this.tweens.add({
         targets: Array.from(matched),
@@ -226,19 +249,15 @@ export class CandyTrash extends Phaser.Scene {
           this.removeMatched(Array.from(matched));
         },
       });
-    } else if (!initial) {
-      this.time.delayedCall(200, () => {
-        this.grid.forEach((row) => row.forEach((tile) => tile.setAlpha(1)));
-      });
+    } else {
+      if (!initial) this.checkPossibleMoves();
     }
   }
 
-  // ---------- RIMOZIONE + CADUTA ----------
+  // ---------- CADUTA ----------
   removeMatched(matched) {
-    // Sostituisce i tile eliminati con "vuoti"
     matched.forEach((tile) => (tile.color = null));
 
-    // per ogni colonna, fa "cadere" i blocchi
     for (let col = 0; col < this.cols; col++) {
       let emptySpots = 0;
       for (let row = this.rows - 1; row >= 0; row--) {
@@ -251,16 +270,13 @@ export class CandyTrash extends Phaser.Scene {
             targets: tile,
             y: targetY,
             duration: 200,
-            onComplete: () => {
-              tile.row += emptySpots;
-            },
+            onComplete: () => (tile.row += emptySpots),
           });
           this.grid[row + emptySpots][col] = tile;
           this.grid[row][col] = { color: null };
         }
       }
 
-      // genera nuovi tile in cima
       for (let i = 0; i < emptySpots; i++) {
         const color = Phaser.Utils.Array.GetRandom(this.colors);
         const x = col * this.tileSize + this.tileSize / 2;
@@ -272,10 +288,8 @@ export class CandyTrash extends Phaser.Scene {
         tile.row = i;
         tile.col = col;
         tile.setInteractive();
-
         this.grid[i][col] = tile;
 
-        // animazione di caduta
         this.tweens.add({
           targets: tile,
           y: i * this.tileSize + this.tileSize / 2 + 130,
@@ -284,7 +298,84 @@ export class CandyTrash extends Phaser.Scene {
       }
     }
 
-    // dopo le animazioni, controlla nuovi match
     this.time.delayedCall(350, () => this.checkMatches());
+  }
+
+  // ---------- GAME OVER ----------
+  checkPossibleMoves() {
+    const canMove = this.hasPossibleMatch();
+    if (!canMove) {
+      this.add.text(150, 350, "GAME OVER", {
+        fontSize: "48px",
+        color: "#ff3333",
+      });
+      this.input.removeAllListeners();
+    }
+  }
+
+  hasPossibleMatch() {
+    for (let r = 0; r < this.rows; r++) {
+      for (let c = 0; c < this.cols; c++) {
+        const current = this.grid[r][c];
+        if (!current || !current.color) continue;
+
+        // prova swap destro
+        if (c < this.cols - 1) {
+          const right = this.grid[r][c + 1];
+          if (this.testSwapForMatch(current, right)) return true;
+        }
+        // prova swap basso
+        if (r < this.rows - 1) {
+          const down = this.grid[r + 1][c];
+          if (this.testSwapForMatch(current, down)) return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  testSwapForMatch(a, b) {
+    const temp = a.color;
+    a.color = b.color;
+    b.color = temp;
+
+    const result = this.findAnyMatch();
+
+    // reset
+    const temp2 = a.color;
+    a.color = b.color;
+    b.color = temp2;
+
+    return result;
+  }
+
+  findAnyMatch() {
+    for (let row = 0; row < this.rows; row++) {
+      let chain = [this.grid[row][0]];
+      for (let col = 1; col < this.cols; col++) {
+        if (this.grid[row][col].color === chain[0].color)
+          chain.push(this.grid[row][col]);
+        else {
+          if (chain.length >= this.matchLength) return true;
+          chain = [this.grid[row][col]];
+        }
+      }
+      if (chain.length >= this.matchLength) return true;
+    }
+
+    for (let col = 0; col < this.cols; col++) {
+      let chain = [this.grid[0][col]];
+      for (let row = 1; row < this.rows; row++) {
+        if (this.grid[row][col].color === chain[0].color)
+          chain.push(this.grid[row][col]);
+        else {
+          if (chain.length >= this.matchLength) return true;
+          chain = [this.grid[row][col]];
+        }
+      }
+      if (chain.length >= this.matchLength) return true;
+    }
+
+    return false;
   }
 }
