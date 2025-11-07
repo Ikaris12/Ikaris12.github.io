@@ -1,4 +1,4 @@
-export default class CandyTrash extends Phaser.Scene {
+export class CandyTrash extends Phaser.Scene {
   constructor() {
     super("CandyTrash");
     this.rows = 8;
