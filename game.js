@@ -1,7 +1,7 @@
 import { TitleScene } from "./game/scenes/TitleScene.js";
 import { GameScene } from "./game/scenes/GameScene.js";
 import { StageCompleteScene } from "./game/scenes/StageCompleteScene.js";
-
+import { CandyTrash } from ".game/scenes/CandyTrash/GameScene_CT.js";
 const config = {
   type: Phaser.AUTO,
   pixelArt: true,
@@ -16,7 +16,7 @@ const config = {
     height: window.innerHeight,
   },
   backgroundColor: "#200446",
-  scene: [TitleScene, GameScene, StageCompleteScene],
+  scene: [TitleScene, GameScene, StageCompleteScene, CandyTrash],
 };
 
 new Phaser.Game(config);

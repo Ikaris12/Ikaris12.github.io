@@ -18,7 +18,7 @@ export class TitleScene extends Phaser.Scene {
       )
       .setOrigin(0.5);
 
-    const startButton = this.add
+    const MoonStartButton = this.add
       .text(this.scale.width / 2, this.scale.height / 2 + 20, "Moo 'N' Run", {
         fontSize: "36px",
         fill: "#00ff00",
@@ -28,8 +28,21 @@ export class TitleScene extends Phaser.Scene {
       .setPadding(10)
       .setInteractive({ useHandCursor: true });
 
-    startButton.on("pointerdown", () => {
+    MoonStartButton.on("pointerdown", () => {
       this.scene.start("GameScene");
+    });
+    const CandyStartButton = this.add
+      .text(this.scale.width / 2, this.scale.height / 2 + 80, "CandyTrash", {
+        fontSize: "36px",
+        fill: "#00ff00",
+        backgroundColor: "#222",
+      })
+      .setOrigin(0.5)
+      .setPadding(10)
+      .setInteractive({ useHandCursor: true });
+
+    CandyStartButton.on("pointerdown", () => {
+      this.scene.start("CandyTrash");
     });
   }
 }
