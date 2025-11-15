@@ -27,25 +27,17 @@ export class CandyTrash extends Phaser.Scene {
   createUI() {
     const sliderX = 100;
     const sliderY = 40;
-
     this.add.text(20, sliderY - 10, "Match:", {
       fontSize: "18px",
       color: "#fff",
     });
 
-    const bar = this.add
-      .rectangle(sliderX, sliderY, 150, 6, 0x888888)
-      .setOrigin(0, 0.5);
-
-    const handle = this.add
+    this.sliderHandle = this.add
       .circle(sliderX, sliderY, 10, 0xffffff)
       .setInteractive({ draggable: true });
-    this.sliderHandle = handle;
-
     this.savedIndicator = this.add
       .circle(sliderX, sliderY, 6, 0x00ff00)
       .setOrigin(0.5);
-
     this.sliderText = this.add.text(
       sliderX + 170,
       sliderY - 10,
@@ -55,15 +47,13 @@ export class CandyTrash extends Phaser.Scene {
 
     const minX = sliderX;
     const maxX = sliderX + 150;
-    this.input.setDraggable(handle);
-
-    handle.on("drag", (pointer, dragX) => {
+    this.input.setDraggable(this.sliderHandle);
+    this.sliderHandle.on("drag", (pointer, dragX) => {
       dragX = Phaser.Math.Clamp(dragX, minX, maxX);
-      handle.x = dragX;
+      this.sliderHandle.x = dragX;
       const t = (dragX - minX) / (maxX - minX);
-      const newValue = Math.round(3 + t * 2);
-      this.tempMatchLength = newValue;
-      this.sliderText.setText(newValue.toString());
+      this.tempMatchLength = Math.round(3 + t * 2);
+      this.sliderText.setText(this.tempMatchLength.toString());
       this.updateInfoText();
       this.updateConfirmButtonState();
     });
@@ -86,7 +76,6 @@ export class CandyTrash extends Phaser.Scene {
       fontSize: "14px",
       color: "#aaa",
     });
-
     this.updateInfoText();
     this.updateConfirmButtonState();
   }
@@ -134,7 +123,7 @@ export class CandyTrash extends Phaser.Scene {
     this.scoreText.setText(`Punteggio: ${this.score}`);
   }
 
-  // ---------- GRIGLIA ----------
+  // ---------- GRID ----------
   createGrid() {
     const offsetY = 160;
     const gridWidth = this.cols * this.tileSize;
@@ -146,8 +135,7 @@ export class CandyTrash extends Phaser.Scene {
       this.grid[row] = [];
       for (let col = 0; col < this.cols; col++) {
         const color = Phaser.Utils.Array.GetRandom(this.colors);
-        const tile = this.createTile(color, startX, startY, row, col);
-        this.grid[row][col] = tile;
+        this.grid[row][col] = this.createTile(color, startX, startY, row, col);
       }
     }
     this.gridStart = { x: startX, y: startY };
@@ -160,12 +148,10 @@ export class CandyTrash extends Phaser.Scene {
 
     let tile;
     if (color === 0x00ff00) {
-      // Gemma verde
       tile = this.add
         .image(x, y, "green_gem")
         .setDisplaySize(this.tileSize - 8, this.tileSize - 8);
     } else {
-      // Quadrato colorato
       tile = this.add
         .rectangle(x, y, this.tileSize - 4, this.tileSize - 4, color)
         .setOrigin(0.5);
@@ -196,8 +182,10 @@ export class CandyTrash extends Phaser.Scene {
     this.checkMatches(true);
   }
 
-  // ---------- Selezione e Scambio ----------
   selectTile(pointer, tile) {
+    const targetScale =
+      tile.texture && tile.texture.key === "green_gem" ? 0.8 : 0.85;
+
     if (this.selectedTile === tile) {
       this.tweens.add({ targets: tile, scale: 1, duration: 100 });
       this.selectedTile = null;
@@ -206,7 +194,7 @@ export class CandyTrash extends Phaser.Scene {
 
     if (!this.selectedTile) {
       this.selectedTile = tile;
-      this.tweens.add({ targets: tile, scale: 0.85, duration: 100 });
+      this.tweens.add({ targets: tile, scale: targetScale, duration: 100 });
     } else if (this.areAdjacent(this.selectedTile, tile)) {
       this.swapTilesAnimated(this.selectedTile, tile);
       this.tweens.add({ targets: this.selectedTile, scale: 1, duration: 100 });
@@ -214,7 +202,7 @@ export class CandyTrash extends Phaser.Scene {
     } else {
       this.tweens.add({ targets: this.selectedTile, scale: 1, duration: 100 });
       this.selectedTile = tile;
-      this.tweens.add({ targets: tile, scale: 0.85, duration: 100 });
+      this.tweens.add({ targets: tile, scale: targetScale, duration: 100 });
     }
   }
 
