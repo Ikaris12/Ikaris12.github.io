@@ -3,7 +3,7 @@ export class CandyGrid {
     scene,
     rows = 8,
     cols = 8,
-    tilesize = 64,
+    tileSize = 64,
     colors = [0xff0000, 0x00ff00, 0x0000ff, 0xffff00, 0xff00ff]
   ) {
     this.scene = scene;
