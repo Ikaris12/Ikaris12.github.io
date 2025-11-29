@@ -1,4 +1,4 @@
-import { CandyGrid } from "./game/scenes/CandyTrash/CandyGrid.js";
+import { CandyGrid } from "CandyGrid.js";
 export class CandyTrash extends Phaser.Scene {
   constructor() {
     super("CandyTrash");
