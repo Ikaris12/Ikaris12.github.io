@@ -72,14 +72,14 @@ export class CandyGrid {
 
     const tempX = a.x,
       tempY = a.y;
-    this.tweens.add({
+    tweens.add({
       targets: a,
       x: b.x,
       y: b.y,
       duration: 150,
       ease: "Sine.easeInOut",
     });
-    this.tweens.add({
+    tweens.add({
       targets: b,
       x: tempX,
       y: tempY,
@@ -144,7 +144,7 @@ export class CandyGrid {
 
       // animazione: flash bianco e fade out
       matched.forEach((tile) => {
-        this.tweens.add({
+        tweens.add({
           targets: tile,
           fillColor: 0xffffff,
           duration: 100,
@@ -152,7 +152,7 @@ export class CandyGrid {
         });
       });
 
-      this.tweens.add({
+      tweens.add({
         targets: Array.from(matched),
         alpha: 0,
         duration: 300,
@@ -178,7 +178,7 @@ export class CandyGrid {
           emptySpots++;
         } else if (emptySpots > 0) {
           const targetY = tile.y + emptySpots * this.tileSize;
-          this.tweens.add({
+          tweens.add({
             targets: tile,
             y: targetY,
             duration: 250,
@@ -203,7 +203,7 @@ export class CandyGrid {
         tile.setInteractive();
         this.grid[i][col] = tile;
 
-        this.tweens.add({
+        tweens.add({
           targets: tile,
           y: this.gridStart.y + i * this.tileSize + this.tileSize / 2,
           duration: 300,
