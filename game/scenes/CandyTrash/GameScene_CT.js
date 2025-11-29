@@ -18,7 +18,6 @@ export class CandyTrash extends Phaser.Scene {
     this.gridManager = new CandyGrid(this); // passi la scena
     this.gridManager.createGrid();
     this.createUI();
-    this.createGrid();
     this.input.on("gameobjectdown", this.selectTile, this);
   }
 
