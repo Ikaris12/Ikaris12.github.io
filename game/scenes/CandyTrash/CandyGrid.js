@@ -14,6 +14,7 @@ export class CandyGrid {
     this.grid = [];
     this.gridStart = { x: 0, y: 0 };
   }
+  /*Crea la griglia */
   createGrid() {
     const offsetY = 160;
     const gridWidth = this.cols * this.tileSize;
@@ -30,6 +31,7 @@ export class CandyGrid {
       }
     }
   }
+  /*Crea un elemento della griglia */
   createTile(color, row, col) {
     const x = this.gridStart.x + col * this.tileSize + this.tileSize / 2;
     const y = this.gridStart.y + row * this.tileSize + this.tileSize / 2;
@@ -51,6 +53,7 @@ export class CandyGrid {
     tile.setInteractive();
     return tile;
   }
+  /*Randomizza la griglia se serve */
   randomizeGrid() {
     for (let row = 0; row < this.rows; row++) {
       for (let col = 0; col < this.cols; col++) {
@@ -61,6 +64,7 @@ export class CandyGrid {
       }
     }
   }
+  /*Animazione di scambio degli elementi */
   swapTilesAnimated(a, b) {
     const tempColor = a.color;
     a.color = b.color;

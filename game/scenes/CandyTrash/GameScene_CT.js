@@ -2,8 +2,11 @@ import { CandyGrid } from "./CandyGrid.js";
 export class CandyTrash extends Phaser.Scene {
   constructor() {
     super("CandyTrash");
+    /*Grid Manager gestisce la griglia, 8x8*/
     this.gridManager = null;
     this.selectedTile = null;
+    /*Match length indica quanti elementi minimi
+    devono essere collegati per fare punti*/
     this.matchLength = 3;
     this.tempMatchLength = 3;
     this.score = 0;
@@ -107,7 +110,7 @@ export class CandyTrash extends Phaser.Scene {
       this.updateScore();
       this.updateInfoText();
       this.updateConfirmButtonState();
-      this.randomizeGrid();
+      this.gridManager.randomizeGrid();
     } else {
       this.savedIndicator.fillColor = 0xff0000;
       this.time.delayedCall(
@@ -137,7 +140,7 @@ export class CandyTrash extends Phaser.Scene {
       this.selectedTile = tile;
       this.tweens.add({ targets: tile, scale: targetScale, duration: 100 });
     } else if (this.areAdjacent(this.selectedTile, tile)) {
-      this.swapTilesAnimated(this.selectedTile, tile);
+      this.gridManager.swapTilesAnimated(this.selectedTile, tile);
       this.tweens.add({ targets: this.selectedTile, scale: 1, duration: 100 });
       this.selectedTile = null;
     } else {
