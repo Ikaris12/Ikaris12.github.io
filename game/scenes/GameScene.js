@@ -35,6 +35,8 @@ export class GameScene extends Phaser.Scene {
     this.physics.add.existing(this.ground, true);
     //===PLAYER===
     this.player = this.physics.add.sprite(64, 0, "player");
+    this.player.setPipeline("TextureTintPipeline");
+    this.player.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
     this.player.setCollideWorldBounds(true);
     this.player.displayWidth = 80;
     this.player.displayHeight = 64;
