@@ -4,7 +4,7 @@ import { StageCompleteScene } from "./game/scenes/StageCompleteScene.js";
 import { CandyTrash } from "./game/scenes/CandyTrash/GameScene_CT.js";
 const config = {
   type: Phaser.AUTO,
-  pixelArt: true,
+  //pixelArt: true,
   physics: {
     default: "arcade",
     arcade: { gravity: { y: 800 }, debug: false },
