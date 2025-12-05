@@ -38,8 +38,8 @@ export class GameScene extends Phaser.Scene {
     this.player.setPipeline("TextureTintPipeline");
     this.player.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
     this.player.setCollideWorldBounds(true);
-    this.player.displayWidth = 80;
-    this.player.displayHeight = 64;
+    this.player.displayWidth = 160;
+    this.player.displayHeight = 128;
     //===GAMEPLAY===
     this.physics.add.collider(this.player, this.ground);
     this.input.on("pointerdown", this.jump, this);
