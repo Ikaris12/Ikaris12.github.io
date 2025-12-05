@@ -2,6 +2,10 @@ const JUMP_FORCE = -400;
 const INITIAL_OBJECTIVE = 15;
 const GEM_H = 64;
 const GEM_W = 64;
+const PLR_W = 120;
+const PLR_H = 96;
+const WALL_W = 70;
+const WALL_H = 73;
 export class GameScene extends Phaser.Scene {
   constructor() {
     super("GameScene");
@@ -38,8 +42,8 @@ export class GameScene extends Phaser.Scene {
     this.player.setPipeline("TextureTintPipeline");
     this.player.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
     this.player.setCollideWorldBounds(true);
-    this.player.displayWidth = 160;
-    this.player.displayHeight = 128;
+    this.player.displayWidth = PLR_W;
+    this.player.displayHeight = PLR_H;
     //===GAMEPLAY===
     this.physics.add.collider(this.player, this.ground);
     this.input.on("pointerdown", this.jump, this);
@@ -125,10 +129,10 @@ export class GameScene extends Phaser.Scene {
 
   spawnWall() {
     if (this.score > 19) {
-      const wallY = Phaser.Math.Between(88, this.scale.height - 88);
+      const wallY = Phaser.Math.Between(WALL_H, this.scale.height - WALL_H);
       const wall = this.walls.create(this.scale.width + 200, wallY, "walls");
-      wall.displayWidth = 140;
-      wall.displayHeight = 176;
+      wall.displayWidth = WALL_W;
+      wall.displayHeight = WALL_H;
       wall.setVelocityX(-200 - this.score * 4);
       wall.setGravityY(-800);
     }
