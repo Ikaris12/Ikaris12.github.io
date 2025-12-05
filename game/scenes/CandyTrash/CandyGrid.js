@@ -162,7 +162,7 @@ export class CandyGrid {
         },
       });
     } else {
-      if (!initial) this.checkPossibleMoves();
+      if (!initial) this.scene.checkPossibleMoves();
     }
   }
 
