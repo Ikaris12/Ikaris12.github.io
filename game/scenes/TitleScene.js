@@ -68,11 +68,11 @@ export class TitleScene extends Phaser.Scene {
       this.scene.start("GameFestSpecial");
     });
     GameFestAdd = this.add.image(
-      this.scale.width - 256,
-      this.scale.height - 240,
-      256,
-      240,
+      this.scale.width - 128,
+      this.scale.height - 120,
       "GameFestAdd"
     );
+    GameFestAdd.displayWidth = 256;
+    GameFestAdd.displayHeight = 240;
   }
 }
