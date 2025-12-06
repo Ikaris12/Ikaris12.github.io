@@ -59,7 +59,7 @@ export class TitleScene extends Phaser.Scene {
       this.scene.start("GameFestSpecial");
     });
 
-    if (this.scene.scale.isLandscape) {
+    if (this.scale.orientation === "landscape") {
       const GameFestAdd = this.add.image(W - 256, H - 240, "GameFestAdd");
       GameFestAdd.displayWidth = 512;
       GameFestAdd.displayHeight = 480;
