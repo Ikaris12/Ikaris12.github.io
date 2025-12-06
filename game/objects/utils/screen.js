@@ -10,5 +10,5 @@ export function updateScreenSize(width, height) {
 }
 
 export function reScaleW(factor, imageWidth) {
-  return W / factor / imageWidth;
+  return (W * factor) / imageWidth;
 }
