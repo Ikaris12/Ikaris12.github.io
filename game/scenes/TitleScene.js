@@ -7,6 +7,7 @@ export class TitleScene extends Phaser.Scene {
       "GameFestAdd",
       "game/assets/images/GameFestSpecial/GameFestAdd.png"
     );
+    this.load.image("GameLogo", "game/assets/images/game_logo.png");
   }
   create() {
     this.cameras.main.setBackgroundColor("#000000");
@@ -74,5 +75,13 @@ export class TitleScene extends Phaser.Scene {
     );
     GameFestAdd.displayWidth = 512;
     GameFestAdd.displayHeight = 480;
+
+    const GameLogo = this.add.image(
+      this.scale.width / 2,
+      this.scale.height / 2 - 240,
+      "GameFestAdd"
+    );
+    GameLogo.displayWidth = 512;
+    GameLogo.displayHeight = 480;
   }
 }
