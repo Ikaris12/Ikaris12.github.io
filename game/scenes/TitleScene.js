@@ -1,5 +1,5 @@
 import { updateScreenSize } from "../objects/utils/screen.js";
-import { W, H, fontSize } from "../objects/utils/screen.js";
+import { W, H, resFontSize } from "../objects/utils/screen.js";
 import { reScaleW } from "../objects/utils/screen.js";
 export class TitleScene extends Phaser.Scene {
   constructor() {
@@ -17,7 +17,7 @@ export class TitleScene extends Phaser.Scene {
     updateScreenSize(this.scale.width, this.scale.height);
     const MoonStartButton = this.add
       .text(W / 2, H / 2 + 20, "Moo 'N' Run", {
-        fontSize: fontSize + "px",
+        fontSize: resFontSize + "px",
         fill: "#00ff00",
         backgroundColor: "#222",
       })
@@ -30,7 +30,7 @@ export class TitleScene extends Phaser.Scene {
     });
     const CandyStartButton = this.add
       .text(W / 2, H / 2 + 3 * fontSize, "CandyTrash", {
-        fontSize: fontSize + "px",
+        fontSize: resFontSize + "px",
         fill: "#00ff00",
         backgroundColor: "#222",
       })
@@ -44,7 +44,7 @@ export class TitleScene extends Phaser.Scene {
     const GameFestSpecialButton = this.add
       .text(
         this.scale.width / 2,
-        this.scale.height / 2 + 6 * fontSize,
+        this.scale.height / 2 + 6 * resFontSize,
         "SPECIALE GAME FEST",
         {
           fontSize: fontSize + "px",
