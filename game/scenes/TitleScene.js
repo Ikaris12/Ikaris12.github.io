@@ -67,7 +67,7 @@ export class TitleScene extends Phaser.Scene {
     GameFestSpecialButton.on("pointerdown", () => {
       this.scene.start("GameFestSpecial");
     });
-    GameFestAdd = this.add.image(
+    const GameFestAdd = this.add.image(
       this.scale.width - 256,
       this.scale.height - 240,
       "GameFestAdd"
