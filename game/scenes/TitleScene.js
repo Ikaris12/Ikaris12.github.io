@@ -70,6 +70,8 @@ export class TitleScene extends Phaser.Scene {
     GameFestAdd = this.add.image(
       this.scale.width - 256,
       this.scale.height - 240,
+      256,
+      240,
       "GameFestAdd"
     );
   }
