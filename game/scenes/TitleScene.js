@@ -66,11 +66,8 @@ export class TitleScene extends Phaser.Scene {
       GameFestAdd.displayHeight = 480;
     }
 
-    const GameLogo = this.add.image(
-      W / 2,
-      reScaleW(0.5, GameLogo.width) / 2 + H * 0.1,
-      "GameLogo"
-    );
+    const GameLogo = this.add.image(0, 0, "GameLogo");
+    GameLogo.setPosition(W / 2, reScaleW(0.5, GameLogo.width) / 2 + H * 0.1);
     GameLogo.setScale(reScaleW(0.5, GameLogo.width));
   }
 }
