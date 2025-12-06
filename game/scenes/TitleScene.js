@@ -1,5 +1,5 @@
 import { updateScreenSize } from "../objects/utils/screen.js";
-import { W, H } from "../objects/utils/screen.js";
+import { W, H, rW, rH } from "../objects/utils/screen.js";
 export class TitleScene extends Phaser.Scene {
   constructor() {
     super("TitleScene");
