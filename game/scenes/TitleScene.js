@@ -69,6 +69,6 @@ export class TitleScene extends Phaser.Scene {
     const GameLogo = this.add.image(0, 0, "GameLogo");
     GameLogo.setPosition(W / 2, reScaleW(0.5, GameLogo.width) / 2 + H * 0.3);
     GameLogo.setScale(reScaleW(0.5, GameLogo.width));
-    print(resFontSize);
+    console.log(resFontSize);
   }
 }
