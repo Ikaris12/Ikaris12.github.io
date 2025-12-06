@@ -67,10 +67,10 @@ export class TitleScene extends Phaser.Scene {
     }
 
     const GameLogo = this.add.image(
-      this.scale.width / 2,
-      this.scale.height / 2 - 240,
+      W / 2,
+      reScaleW(0.5, GameLogo.width) / 2 + H * 0.1,
       "GameLogo"
     );
-    GameLogo.setScale(reScaleW(0.3, GameLogo.width));
+    GameLogo.setScale(reScaleW(0.5, GameLogo.width));
   }
 }
