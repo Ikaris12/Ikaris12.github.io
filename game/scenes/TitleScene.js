@@ -29,7 +29,7 @@ export class TitleScene extends Phaser.Scene {
       this.scene.start("GameScene");
     });
     const CandyStartButton = this.add
-      .text(W / 2, H / 2 + 3 * fontSize, "CandyTrash", {
+      .text(W / 2, H / 2 + 3 * resFontSize, "CandyTrash", {
         fontSize: resFontSize + "px",
         fill: "#00ff00",
         backgroundColor: "#222",
@@ -47,7 +47,7 @@ export class TitleScene extends Phaser.Scene {
         this.scale.height / 2 + 6 * resFontSize,
         "SPECIALE GAME FEST",
         {
-          fontSize: fontSize + "px",
+          fontSize: resFontSize + "px",
           fill: "#00ff00",
           backgroundColor: "#222",
         }
@@ -69,5 +69,6 @@ export class TitleScene extends Phaser.Scene {
     const GameLogo = this.add.image(0, 0, "GameLogo");
     GameLogo.setPosition(W / 2, reScaleW(0.5, GameLogo.width) / 2 + H * 0.3);
     GameLogo.setScale(reScaleW(0.5, GameLogo.width));
+    print(resFontSize);
   }
 }
