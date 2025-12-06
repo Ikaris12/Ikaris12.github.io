@@ -70,7 +70,7 @@ export class TitleScene extends Phaser.Scene {
       this.scale.height / 2 - 240,
       "GameLogo"
     );
-    GameLogo.displayWidth = W / 3;
-    GameLogo.displayHeight = H / 3;
+    GameLogo.displayWidth = rW * 256;
+    GameLogo.displayHeight = rH * 240;
   }
 }
