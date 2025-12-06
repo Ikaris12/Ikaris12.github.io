@@ -2,7 +2,12 @@ export class TitleScene extends Phaser.Scene {
   constructor() {
     super("TitleScene");
   }
-
+  preload() {
+    this.load.image(
+      "GameFestAdd",
+      "game/assets/images/GameFestSpecial/GameFestAdd.png"
+    );
+  }
   create() {
     this.cameras.main.setBackgroundColor("#000000");
 
@@ -44,5 +49,24 @@ export class TitleScene extends Phaser.Scene {
     CandyStartButton.on("pointerdown", () => {
       this.scene.start("CandyTrash");
     });
+    const GameFestSpecialButton = this.add
+      .text(
+        this.scale.width / 2,
+        this.scale.height / 2 + 160,
+        "SPECIALE GAME FEST",
+        {
+          fontSize: "36px",
+          fill: "#00ff00",
+          backgroundColor: "#222",
+        }
+      )
+      .setOrigin(0.5)
+      .setPadding(10)
+      .setInteractive({ useHandCursor: true });
+
+    GameFestSpecialButton.on("pointerdown", () => {
+      this.scene.start("GameFestSpecial");
+    });
   }
+  GameFestAdd = this.scene.add.image(width - 256, height - 240, "GameFestAdd");
 }

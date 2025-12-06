@@ -45,7 +45,7 @@ export class CandyGrid {
       tile = this.scene.add
         .image(x, y, "green_gem")
         .setDisplaySize(this.tileSize - 8, this.tileSize - 8);
-      tile.setTintFill(0xff000060);
+      tile.setTintFill(0xff0000);
     } else {
       tile = this.scene.add
         .rectangle(x, y, this.tileSize - 4, this.tileSize - 4, color)
