@@ -8,3 +8,7 @@ export function updateScreenSize(width, height) {
   rW = W / 1920;
   rH = H / 1080;
 }
+
+export function reScaleW(factor, imageWidth) {
+  return W / factor / imageWidth;
+}

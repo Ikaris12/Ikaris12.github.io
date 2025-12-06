@@ -1,5 +1,6 @@
 import { updateScreenSize } from "../objects/utils/screen.js";
 import { W, H, rW, rH } from "../objects/utils/screen.js";
+import { reScaleW } from "../objects/utils/screen.js";
 export class TitleScene extends Phaser.Scene {
   constructor() {
     super("TitleScene");
@@ -70,6 +71,6 @@ export class TitleScene extends Phaser.Scene {
       this.scale.height / 2 - 240,
       "GameLogo"
     );
-    GameLogo.setDisplaySize(W * 0.3, null);
+    GameLogo.setScale(reScaleW(0.3, GameLogo.width));
   }
 }
