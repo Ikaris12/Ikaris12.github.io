@@ -52,17 +52,18 @@ export class TitleScene extends Phaser.Scene {
       .setOrigin(0.5)
       .setPadding(10)
       .setInteractive({ useHandCursor: true });
-
-    GameFestSpecialButton.on("pointerdown", () => {
-      this.scene.start("GameFestSpecial");
-    });
-    const GameFestAdd = this.add.image(
-      this.scale.width - 256,
-      this.scale.height - 240,
-      "GameFestAdd"
-    );
-    GameFestAdd.displayWidth = 512;
-    GameFestAdd.displayHeight = 480;
+    if (this.width > 1000) {
+      GameFestSpecialButton.on("pointerdown", () => {
+        this.scene.start("GameFestSpecial");
+      });
+      const GameFestAdd = this.add.image(
+        this.scale.width - 256,
+        this.scale.height - 240,
+        "GameFestAdd"
+      );
+      GameFestAdd.displayWidth = 512;
+      GameFestAdd.displayHeight = 480;
+    }
 
     const GameLogo = this.add.image(
       this.scale.width / 2,
