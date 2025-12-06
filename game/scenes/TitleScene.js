@@ -1,5 +1,5 @@
 import { updateScreenSize } from "../objects/utils/screen.js";
-import { W, H, rW, rH } from "../objects/utils/screen.js";
+import { W, H, fontSize } from "../objects/utils/screen.js";
 import { reScaleW } from "../objects/utils/screen.js";
 export class TitleScene extends Phaser.Scene {
   constructor() {
@@ -17,7 +17,7 @@ export class TitleScene extends Phaser.Scene {
     updateScreenSize(this.scale.width, this.scale.height);
     const MoonStartButton = this.add
       .text(W / 2, H / 2 + 20, "Moo 'N' Run", {
-        fontSize: "36px",
+        fontSize: fontSize + "px",
         fill: "#00ff00",
         backgroundColor: "#222",
       })
@@ -30,7 +30,7 @@ export class TitleScene extends Phaser.Scene {
     });
     const CandyStartButton = this.add
       .text(this.scale.width / 2, this.scale.height / 2 + 80, "CandyTrash", {
-        fontSize: "36px",
+        fontSize: fontSize + "px",
         fill: "#00ff00",
         backgroundColor: "#222",
       })
@@ -47,7 +47,7 @@ export class TitleScene extends Phaser.Scene {
         this.scale.height / 2 + 160,
         "SPECIALE GAME FEST",
         {
-          fontSize: "36px",
+          fontSize: fontSize + "px",
           fill: "#00ff00",
           backgroundColor: "#222",
         }
@@ -67,7 +67,7 @@ export class TitleScene extends Phaser.Scene {
     }
 
     const GameLogo = this.add.image(0, 0, "GameLogo");
-    GameLogo.setPosition(W / 2, reScaleW(0.5, GameLogo.width) / 2 + H * 0.1);
+    GameLogo.setPosition(W / 2, reScaleW(0.5, GameLogo.width) / 2 + H * 0.3);
     GameLogo.setScale(reScaleW(0.5, GameLogo.width));
   }
 }
