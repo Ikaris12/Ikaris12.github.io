@@ -72,7 +72,7 @@ export class TitleScene extends Phaser.Scene {
       this.scale.height - 240,
       "GameFestAdd"
     );
-    GameFestAdd.displayWidth = 256 * 2;
-    GameFestAdd.displayHeight = 240 * 2;
+    GameFestAdd.displayWidth = 512;
+    GameFestAdd.displayHeight = 480;
   }
 }
