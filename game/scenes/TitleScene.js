@@ -1,3 +1,5 @@
+import { updateScreenSize } from "../objects/utils/screen.js";
+import { W, H } from "../objects/utils/screen.js";
 export class TitleScene extends Phaser.Scene {
   constructor() {
     super("TitleScene");
@@ -11,9 +13,9 @@ export class TitleScene extends Phaser.Scene {
   }
   create() {
     this.cameras.main.setBackgroundColor("#000000");
-
+    updateScreenSize(this.scale.width, this.scale.height);
     const MoonStartButton = this.add
-      .text(this.scale.width / 2, this.scale.height / 2 + 20, "Moo 'N' Run", {
+      .text(W / 2, H / 2 + 20, "Moo 'N' Run", {
         fontSize: "36px",
         fill: "#00ff00",
         backgroundColor: "#222",
