@@ -12,18 +12,6 @@ export class TitleScene extends Phaser.Scene {
   create() {
     this.cameras.main.setBackgroundColor("#000000");
 
-    this.add
-      .text(
-        this.scale.width / 2,
-        this.scale.height / 2 - 100,
-        "Silipetto Studios 1001 Games",
-        {
-          fontSize: "48px",
-          fill: "#ffffff",
-        }
-      )
-      .setOrigin(0.5);
-
     const MoonStartButton = this.add
       .text(this.scale.width / 2, this.scale.height / 2 + 20, "Moo 'N' Run", {
         fontSize: "36px",
@@ -79,7 +67,7 @@ export class TitleScene extends Phaser.Scene {
     const GameLogo = this.add.image(
       this.scale.width / 2,
       this.scale.height / 2 - 240,
-      "GameFestAdd"
+      "GameLogo"
     );
     GameLogo.displayWidth = 512;
     GameLogo.displayHeight = 480;
