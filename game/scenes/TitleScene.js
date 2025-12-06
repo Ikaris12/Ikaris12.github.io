@@ -52,7 +52,7 @@ export class TitleScene extends Phaser.Scene {
       .setOrigin(0.5)
       .setPadding(10)
       .setInteractive({ useHandCursor: true });
-    if (this.width > 1000) {
+    if (this.scene.scale.isLandscape) {
       GameFestSpecialButton.on("pointerdown", () => {
         this.scene.start("GameFestSpecial");
       });
