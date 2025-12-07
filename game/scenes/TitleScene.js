@@ -47,7 +47,7 @@ export class TitleScene extends Phaser.Scene {
         this.scale.height / 2 + 6 * resFontSize,
         "SPECIALE GAME FEST",
         {
-          fontSize: resFontSize + "px",
+          fontSize: resFontSize / 2 + "px",
           fill: "#00ff00",
           backgroundColor: "#222",
         }
